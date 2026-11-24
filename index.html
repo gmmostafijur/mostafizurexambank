@@ -1,0 +1,1953 @@
+<!doctype html>
+<html lang="bn">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>ফিন্যান্স ও ব্যাংকিং — বহুনির্বাচনি পরীক্ষা</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f4f6f3;
+        --surface: #ffffff;
+        --surface-2: #eef2ec;
+        --ink: #1c2420;
+        --ink-soft: #4b5750;
+        --ink-faint: #71807a;
+        --line: #d9e0d7;
+        --accent: #14603c;
+        --accent-strong: #0d4a2d;
+        --accent-soft: #e2efe5;
+        --accent-ink: #ffffff;
+        --gold: #b8860b;
+        --gold-soft: #faf2dc;
+        --danger: #b3261e;
+        --danger-soft: #fbeae8;
+        --correct: #14603c;
+        --correct-soft: #e2efe5;
+        --wrong: #b3261e;
+        --wrong-soft: #fbeae8;
+        --warn: #8a5a00;
+        --warn-soft: #faf2dc;
+        --shadow: 0 10px 30px rgba(20, 50, 32, 0.10);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101613;
+          --surface: #1a211d;
+          --surface-2: #232c26;
+          --ink: #eef3ee;
+          --ink-soft: #b9c6bb;
+          --ink-faint: #8fa195;
+          --line: #33403a;
+          --accent: #4cc38a;
+          --accent-strong: #7bd3a5;
+          --accent-soft: #1e3328;
+          --accent-ink: #0c1a12;
+          --gold: #e3b341;
+          --gold-soft: #2e2716;
+          --danger: #ff8a80;
+          --danger-soft: #3a1f1d;
+          --correct: #4cc38a;
+          --correct-soft: #1e3328;
+          --wrong: #ff8a80;
+          --wrong-soft: #3a1f1d;
+          --warn: #e3b341;
+          --warn-soft: #2e2716;
+          --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        font-family: "Noto Sans Bengali", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        line-height: 1.65;
+      }
+      button, input { font-family: inherit; }
+      button { cursor: pointer; }
+      .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+
+      /* ---------- Start screen ---------- */
+      .start-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 28px 22px 26px;
+        margin-top: 28px;
+        text-align: center;
+      }
+      .college {
+        font-size: 15px; font-weight: 600; color: var(--ink-soft);
+        margin: 0 0 6px;
+      }
+      .exam-title {
+        font-size: 27px; line-height: 1.35; font-weight: 800;
+        margin: 0 0 4px; letter-spacing: -0.01em;
+      }
+      .exam-sub { font-size: 16px; font-weight: 600; color: var(--accent); margin: 0 0 18px; }
+      .meta-grid {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+        margin: 0 0 22px;
+      }
+      .meta-box {
+        background: var(--surface-2); border: 1px solid var(--line);
+        border-radius: 12px; padding: 12px 6px;
+      }
+      .meta-box b { display: block; font-size: clamp(16px, 5vw, 21px); line-height: 1.3; white-space: nowrap; }
+      .meta-box span { font-size: 13px; color: var(--ink-soft); }
+      .rules {
+        text-align: left; background: var(--gold-soft);
+        border: 1px solid var(--line); border-radius: 12px;
+        padding: 14px 16px; margin: 0 0 22px; font-size: 14.5px;
+      }
+      .rules p { margin: 0 0 6px; font-weight: 700; }
+      .rules ul { margin: 0; padding-left: 20px; }
+      .rules li { margin: 3px 0; }
+      .field { text-align: left; margin-bottom: 16px; }
+      .field label { display: block; font-weight: 700; font-size: 15px; margin-bottom: 7px; }
+      .field input {
+        width: 100%; min-height: 52px; font-size: 17px;
+        padding: 12px 14px; border-radius: 12px;
+        border: 1.5px solid var(--line); background: var(--surface);
+        color: var(--ink);
+      }
+      .field input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+      .field .err { color: var(--danger); font-size: 14px; margin-top: 6px; display: none; }
+      .btn-start {
+        width: 100%; min-height: 54px; border: none; border-radius: 12px;
+        background: var(--accent); color: var(--accent-ink);
+        font-size: 18px; font-weight: 800; padding: 12px;
+      }
+      .btn-start:active { background: var(--accent-strong); }
+
+      /* ---------- Selectors (subject / exam) ---------- */
+      .select-group { text-align: left; margin-bottom: 16px; }
+      .select-group > .sg-label { display: block; font-weight: 700; font-size: 15px; margin-bottom: 7px; }
+      .choice-list { display: grid; gap: 10px; }
+      .choice {
+        display: flex; align-items: flex-start; gap: 12px; width: 100%;
+        text-align: left; padding: 13px 14px; min-height: 52px;
+        background: var(--surface); border: 1.5px solid var(--line);
+        border-radius: 12px; color: var(--ink); font-size: 16px; line-height: 1.5;
+      }
+      .choice .radio {
+        flex: none; width: 22px; height: 22px; border-radius: 50%;
+        border: 2px solid var(--line); margin-top: 2px; position: relative;
+        background: var(--surface);
+      }
+      .choice.selected { border-color: var(--accent); background: var(--accent-soft); }
+      .choice.selected .radio { border-color: var(--accent); }
+      .choice.selected .radio::after {
+        content: ""; position: absolute; inset: 3px; border-radius: 50%;
+        background: var(--accent);
+      }
+      .choice .c-main { font-weight: 700; display: block; }
+      .choice .c-sub { font-size: 14px; color: var(--ink-soft); display: block; }
+
+      /* ---------- Exam top bar ---------- */
+      .topbar {
+        position: sticky; top: 0; z-index: 20;
+        background: var(--surface); border-bottom: 1px solid var(--line);
+        margin: 0 -16px; padding: 10px 16px;
+      }
+      .topbar-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; max-width: 760px; margin: 0 auto; }
+      .who { min-width: 0; }
+      .who .nm { font-weight: 700; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 46vw; }
+      .who .pr { font-size: 13px; color: var(--ink-soft); }
+      .timer {
+        flex: none; display: flex; align-items: center; gap: 7px;
+        background: var(--surface-2); border: 1.5px solid var(--line);
+        border-radius: 999px; padding: 6px 14px;
+        font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums;
+      }
+      .timer svg { width: 19px; height: 19px; flex: none; }
+      .timer.low {
+        background: var(--danger-soft); border-color: var(--danger); color: var(--danger);
+        animation: pulse 1s ease-in-out infinite;
+      }
+      @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+      @media (prefers-reduced-motion: reduce) { .timer.low { animation: none; } }
+      .progress-track { height: 6px; background: var(--surface-2); border-radius: 99px; margin-top: 9px; overflow: hidden; max-width: 760px; margin-left: auto; margin-right: auto; }
+      .progress-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .25s ease; width: 0%; }
+
+      /* ---------- Question card ---------- */
+      .qcard {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: var(--radius); box-shadow: var(--shadow);
+        padding: 20px 18px; margin-top: 18px;
+      }
+      .qhead { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+      .qnum {
+        background: var(--accent); color: var(--accent-ink);
+        font-weight: 800; font-size: 15px; border-radius: 999px; padding: 4px 14px;
+      }
+      .qcount { font-size: 13.5px; color: var(--ink-faint); font-weight: 600; }
+      .stimulus {
+        background: var(--gold-soft); border: 1px solid var(--line);
+        border-radius: 10px; padding: 13px 15px; margin-bottom: 16px;
+        font-size: 15.5px;
+      }
+      .stimulus .st-label { display: block; font-weight: 800; font-size: 13.5px; color: var(--warn); margin-bottom: 4px; }
+      .qtext { font-size: 17.5px; font-weight: 600; line-height: 1.75; white-space: pre-line; margin: 0 0 18px; }
+      .options { display: grid; gap: 10px; }
+      .opt {
+        display: flex; align-items: flex-start; gap: 12px; width: 100%;
+        text-align: left; min-height: 52px; padding: 12px 14px;
+        background: var(--surface); border: 1.5px solid var(--line);
+        border-radius: 12px; font-size: 16.5px; color: var(--ink); line-height: 1.55;
+      }
+      .opt .letter {
+        flex: none; width: 30px; height: 30px; border-radius: 50%;
+        border: 1.5px solid var(--line); display: grid; place-items: center;
+        font-weight: 800; font-size: 15px; background: var(--surface-2); margin-top: 1px;
+      }
+      .opt.selected { border-color: var(--accent); background: var(--accent-soft); }
+      .opt.selected .letter { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .nav-row { display: flex; gap: 10px; margin-top: 18px; }
+      .btn {
+        min-height: 50px; border-radius: 12px; font-size: 16px; font-weight: 700;
+        padding: 10px 16px; border: 1.5px solid var(--line);
+        background: var(--surface); color: var(--ink);
+      }
+      .btn:disabled { opacity: .4; cursor: not-allowed; }
+      .btn-prev, .btn-next { flex: 1; }
+      .btn-next { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .btn-submit {
+        width: 100%; margin-top: 12px; background: var(--gold-soft);
+        border-color: var(--gold); color: var(--ink);
+      }
+
+      /* ---------- Palette ---------- */
+      .palette {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: var(--radius); padding: 16px; margin-top: 16px;
+      }
+      .palette h3 { margin: 0 0 4px; font-size: 15.5px; }
+      .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; }
+      .legend i { display: inline-block; width: 13px; height: 13px; border-radius: 4px; margin-right: 5px; vertical-align: -1px; border: 1.5px solid var(--line); }
+      .legend .lg-done { background: var(--accent); border-color: var(--accent); }
+      .legend .lg-cur { background: var(--gold); border-color: var(--gold); }
+      .legend .lg-todo { background: var(--surface-2); }
+      .pgrid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+      .pbtn {
+        min-height: 44px; border-radius: 10px; border: 1.5px solid var(--line);
+        background: var(--surface-2); color: var(--ink); font-size: 15.5px; font-weight: 700;
+        padding: 4px 0;
+      }
+      .pbtn.done { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .pbtn.current { outline: 3px solid var(--gold); outline-offset: 1px; }
+
+      /* ---------- Result ---------- */
+      .score-card {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 20px; box-shadow: var(--shadow);
+        padding: 26px 20px; margin-top: 24px; text-align: center;
+      }
+      .score-card .sname { font-size: 16px; color: var(--ink-soft); margin: 0; }
+      .score-card .sname b { color: var(--ink); font-size: 18px; }
+      .big-score { font-size: 56px; font-weight: 800; line-height: 1.15; margin: 8px 0 0; }
+      .big-score small { font-size: 24px; color: var(--ink-faint); font-weight: 600; }
+      .pct { font-size: 19px; font-weight: 700; color: var(--accent); margin: 2px 0 16px; }
+      .verdict { font-size: 16.5px; font-weight: 700; margin: 0 0 18px; }
+      .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+      .stat-box { border-radius: 12px; padding: 11px 4px; border: 1px solid var(--line); }
+      .stat-box b { display: block; font-size: 22px; line-height: 1.3; }
+      .stat-box span { font-size: 13px; color: var(--ink-soft); }
+      .stat-ok { background: var(--correct-soft); }
+      .stat-bad { background: var(--wrong-soft); }
+      .stat-none { background: var(--surface-2); }
+      .time-note { font-size: 14px; color: var(--ink-soft); margin: 14px 0 0; }
+      .review-title { font-size: 20px; font-weight: 800; margin: 28px 0 4px; }
+      .review-sub { font-size: 14.5px; color: var(--ink-soft); margin: 0 0 14px; }
+      .rcard {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
+      }
+      .rcard.ok { border-top: 4px solid var(--correct); }
+      .rcard.bad { border-top: 4px solid var(--wrong); }
+      .rcard.none { border-top: 4px solid var(--ink-faint); }
+      .rhead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+      .rnum { font-weight: 800; font-size: 15px; }
+      .badge { font-size: 13px; font-weight: 800; border-radius: 999px; padding: 3px 12px; }
+      .badge.ok { background: var(--correct-soft); color: var(--correct); }
+      .badge.bad { background: var(--wrong-soft); color: var(--wrong); }
+      .badge.none { background: var(--surface-2); color: var(--ink-soft); }
+      .rq { font-size: 16px; font-weight: 600; white-space: pre-line; line-height: 1.7; margin: 0 0 10px; }
+      .rans { font-size: 15px; margin: 5px 0; }
+      .rans .tag { font-weight: 700; color: var(--ink-soft); }
+      .rans.yours-wrong { color: var(--wrong); }
+      .rans.correct-line { color: var(--correct); font-weight: 600; }
+      .rexpl {
+        background: var(--surface-2); border-radius: 10px;
+        padding: 10px 13px; font-size: 14.5px; margin-top: 10px;
+      }
+      .rexpl b { color: var(--accent); }
+      .btn-retake {
+        width: 100%; min-height: 52px; margin-top: 8px;
+        background: var(--accent); border-color: var(--accent); color: var(--accent-ink);
+        font-size: 17px;
+      }
+
+      /* ---------- Group / subject flow + admin ---------- */
+      .btn-start:disabled { opacity: .45; cursor: not-allowed; }
+      .chosen-row {
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        background: var(--accent-soft); border: 1.5px solid var(--accent);
+        border-radius: 12px; padding: 10px 14px; font-size: 16px; text-align: left;
+      }
+      .btn-small { min-height: 40px; padding: 6px 14px; font-size: 14.5px; border-radius: 10px; flex: none; }
+      .btn-block { width: 100%; margin-top: 10px; }
+      .notice-box {
+        background: var(--warn-soft); border: 1px solid var(--gold); border-radius: 12px;
+        padding: 13px 15px; font-size: 15px; font-weight: 600; margin-top: 10px; text-align: left;
+      }
+      .admin-link-row { margin: 14px 0 0; text-align: center; }
+      .admin-link {
+        background: none; border: none; color: var(--ink-faint);
+        font-size: 14px; text-decoration: underline; padding: 8px 12px;
+      }
+      .field select, .field textarea {
+        width: 100%; font-size: 16px; padding: 12px 14px; border-radius: 12px;
+        border: 1.5px solid var(--line); background: var(--surface);
+        color: var(--ink); font-family: inherit;
+      }
+      .field textarea { min-height: 130px; line-height: 1.6; }
+      .field input[type="file"] {
+        min-height: 0; font-size: 15px; padding: 10px;
+        border: 1.5px dashed var(--line); background: var(--surface-2);
+      }
+      .status-line { font-size: 14.5px; color: var(--accent); font-weight: 600; margin: 8px 0 0; min-height: 1.2em; text-align: left; }
+      .admin-card {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 20px; box-shadow: var(--shadow);
+        padding: 24px 20px 26px; margin-top: 28px;
+      }
+      .admin-card h2 { margin: 0 0 10px; font-size: 22px; }
+      .admin-card h3 {
+        margin: 26px 0 12px; font-size: 18px;
+        border-top: 1px solid var(--line); padding-top: 20px;
+      }
+      .admin-nav { display: flex; gap: 10px; }
+      .admin-nav .btn { flex: 1; }
+      .qedit {
+        border: 1.5px solid var(--line); border-radius: 12px;
+        padding: 14px; margin-bottom: 12px; background: var(--surface-2);
+      }
+      .qedit-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+      .qedit-q {
+        width: 100%; font-family: inherit; font-size: 15.5px; line-height: 1.6;
+        padding: 10px 12px; border-radius: 10px; margin-bottom: 10px;
+        border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+      }
+      .opt-edit { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+      .key-btn {
+        flex: none; width: 44px; height: 44px; border-radius: 50%;
+        border: 2px solid var(--line); background: var(--surface);
+        color: var(--ink); font-size: 17px; font-weight: 800; padding: 0;
+      }
+      .key-btn.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .qedit-o {
+        flex: 1; min-width: 0; min-height: 44px; font-size: 15.5px;
+        padding: 8px 12px; border-radius: 10px;
+        border: 1.5px solid var(--line); background: var(--surface); color: var(--ink);
+      }
+      .qedit-hint { font-size: 13.5px; color: var(--ink-soft); margin: 4px 0 0; }
+      .saved-row {
+        display: flex; align-items: center; gap: 8px;
+        border: 1px solid var(--line); border-radius: 12px;
+        padding: 10px 12px; margin-bottom: 10px;
+      }
+      .saved-info { flex: 1; min-width: 0; }
+      .saved-info b { display: block; font-size: 15.5px; }
+      .saved-info span { font-size: 13.5px; color: var(--ink-soft); display: block; }
+      .btn-danger { color: var(--danger); border-color: var(--danger); }
+      .empty-note { font-size: 14.5px; color: var(--ink-soft); }
+
+      /* ---------- History (আগের পরীক্ষা) ---------- */
+      .btn-history { width: 100%; margin-top: 10px; }
+      .btn-exam-back { margin-top: 12px; }
+      .hist-card {
+        background: var(--surface); border: 1px solid var(--line);
+        border-radius: 20px; box-shadow: var(--shadow);
+        padding: 24px 20px 26px; margin-top: 28px;
+      }
+      .hist-card h2 { margin: 14px 0 4px; font-size: 22px; }
+      .hist-card h3 { margin: 24px 0 10px; font-size: 17px; }
+      .hist-who { color: var(--ink-soft); margin: 0 0 16px; font-size: 15px; }
+      .chart-box {
+        background: var(--surface-2); border: 1px solid var(--line);
+        border-radius: 12px; padding: 12px 10px 4px;
+      }
+      .chart-box svg { display: block; width: 100%; height: auto; }
+      .pct-badge {
+        flex: none; font-weight: 800; font-size: 16px; color: var(--accent);
+        background: var(--accent-soft); border-radius: 999px; padding: 4px 12px;
+      }
+      .device-note { font-size: 13.5px; color: var(--ink-faint); margin: 14px 0 0; }
+
+      /* ---------- Modal ---------- */
+      .overlay {
+        position: fixed; inset: 0; background: rgba(10, 18, 13, .55);
+        display: none; align-items: center; justify-content: center;
+        padding: 18px; z-index: 50;
+      }
+      .overlay.open { display: flex; }
+      .modal {
+        background: var(--surface); border-radius: 16px; padding: 22px 20px;
+        max-width: 420px; width: 100%; box-shadow: var(--shadow);
+      }
+      .modal h3 { margin: 0 0 8px; font-size: 19px; }
+      .modal p { margin: 0 0 18px; font-size: 15.5px; color: var(--ink-soft); }
+      .modal .mrow { display: flex; gap: 10px; }
+      .modal .mrow .btn { flex: 1; }
+      .modal .btn-go { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+
+      <!-- ============ START ============ -->
+      <section id="screen-start">
+        <div class="start-card">
+          <p class="college">Mostafizur Rahman Private Exam</p>
+          <h1 class="exam-title" id="startTitle">বহুনির্বাচনি পরীক্ষা</h1>
+          <p class="exam-sub" id="startSub">আগে গ্রুপ, তারপর বিষয় ও পরীক্ষা বেছে নাও</p>
+          <div class="meta-grid">
+            <div class="meta-box"><b id="metaBox1">—</b><span id="metaBox1Label">বিষয়</span></div>
+            <div class="meta-box"><b id="metaMarks">৩০</b><span>পূর্ণমান</span></div>
+            <div class="meta-box"><b id="metaTime">৩০ মিনিট</b><span>সময়</span></div>
+          </div>
+          <div class="select-group">
+            <span class="sg-label" id="groupLabel">গ্রুপ নির্বাচন করো</span>
+            <div class="choice-list" id="groupList" role="radiogroup" aria-labelledby="groupLabel"></div>
+            <div class="chosen-row hidden" id="groupChosenRow">
+              <span>গ্রুপ: <b id="chosenGroupName"></b></span>
+              <button type="button" class="btn btn-small" id="btnChangeGroup">গ্রুপ বদলান</button>
+            </div>
+          </div>
+          <div class="select-group hidden" id="subjectGroup">
+            <span class="sg-label" id="subjectLabel">বিষয় নির্বাচন করো</span>
+            <div class="choice-list" id="subjectList" role="radiogroup" aria-labelledby="subjectLabel"></div>
+          </div>
+          <div class="select-group hidden" id="examGroup">
+            <span class="sg-label" id="examLabel">পরীক্ষা নির্বাচন করো</span>
+            <div class="choice-list" id="examList" role="radiogroup" aria-labelledby="examLabel"></div>
+            <div class="notice-box hidden" id="noExamBox">এই বিষয়ে এখনো কোনো পরীক্ষা যোগ হয়নি — শীঘ্রই আসছে</div>
+          </div>
+          <div class="rules">
+            <p>পরীক্ষার নিয়ম</p>
+            <ul>
+              <li id="ruleQ">মোট ৩০টি প্রশ্ন, প্রতিটির মান ১।</li>
+              <li id="ruleTime">সময় ৩০ মিনিট — সময় শেষ হলে উত্তরপত্র নিজে থেকেই জমা হয়ে যাবে।</li>
+              <li>প্রতিটি প্রশ্নে সঠিক বিকল্পটি (ক / খ / গ / ঘ) বেছে নাও।</li>
+              <li>প্রশ্নের নম্বরে চাপ দিয়ে যেকোনো প্রশ্নে যাওয়া যাবে, উত্তর বদলানোও যাবে।</li>
+            </ul>
+          </div>
+          <div class="field">
+            <label for="studentName">তোমার নাম</label>
+            <input id="studentName" type="text" placeholder="নাম লেখো" autocomplete="name" />
+            <p class="err" id="nameErr">আগে তোমার নাম লেখো।</p>
+          </div>
+          <button class="btn-start" id="btnStart" type="button" disabled>পরীক্ষা শুরু করো</button>
+          <button class="btn btn-history" id="btnHistoryOpen" type="button" disabled>আগের পরীক্ষা — আমার ফলাফলের ইতিহাস</button>
+          <p class="admin-link-row"><button type="button" class="admin-link" id="btnAdminOpen">অ্যাডমিন</button></p>
+        </div>
+      </section>
+
+      <!-- ============ EXAM ============ -->
+      <section id="screen-exam" class="hidden">
+        <div class="topbar">
+          <div class="topbar-row">
+            <div class="who">
+              <div class="nm" id="whoName"></div>
+              <div class="pr" id="whoProgress"></div>
+            </div>
+            <div class="timer" id="timerBox" role="timer" aria-label="অবশিষ্ট সময়">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg>
+              <span id="timerText">৩০:০০</span>
+            </div>
+          </div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <button class="btn btn-small btn-exam-back" id="btnExamBack" type="button">← হোমে ফিরে যাও</button>
+
+        <div class="qcard">
+          <div class="qhead">
+            <span class="qnum" id="qNumLabel"></span>
+            <span class="qcount" id="qCountLabel"></span>
+          </div>
+          <div class="stimulus hidden" id="stimulusBox">
+            <span class="st-label" id="stimulusLabel"></span>
+            <span id="stimulusText"></span>
+          </div>
+          <p class="qtext" id="qText"></p>
+          <div class="options" id="optionsBox"></div>
+          <div class="nav-row">
+            <button class="btn btn-prev" id="btnPrev" type="button">← আগের প্রশ্ন</button>
+            <button class="btn btn-next" id="btnNext" type="button">পরের প্রশ্ন →</button>
+          </div>
+          <button class="btn btn-submit" id="btnSubmit" type="button">উত্তরপত্র জমা দাও</button>
+        </div>
+
+        <div class="palette">
+          <h3>প্রশ্নের তালিকা</h3>
+          <div class="legend">
+            <span><i class="lg-done"></i>উত্তর দেওয়া হয়েছে</span>
+            <span><i class="lg-todo"></i>বাকি আছে</span>
+            <span><i class="lg-cur"></i>এখনকার প্রশ্ন</span>
+          </div>
+          <div class="pgrid" id="paletteGrid"></div>
+        </div>
+      </section>
+
+      <!-- ============ RESULT ============ -->
+      <section id="screen-result" class="hidden">
+        <div class="score-card">
+          <p class="sname">পরীক্ষার্থী: <b id="resName"></b></p>
+          <p class="sname" id="resExamLine"></p>
+          <div class="big-score"><span id="resScore"></span><small> / <span id="resTotal">৩০</span></small></div>
+          <p class="pct" id="resPct"></p>
+          <p class="verdict" id="resVerdict"></p>
+          <div class="stat-row">
+            <div class="stat-box stat-ok"><b id="resOk"></b><span>সঠিক</span></div>
+            <div class="stat-box stat-bad"><b id="resBad"></b><span>ভুল</span></div>
+            <div class="stat-box stat-none"><b id="resNone"></b><span>উত্তর হয়নি</span></div>
+          </div>
+          <p class="time-note" id="resTime"></p>
+        </div>
+
+        <h2 class="review-title">উত্তর পর্যালোচনা</h2>
+        <p class="review-sub">প্রতিটি প্রশ্নে তোমার উত্তর, সঠিক উত্তর ও ব্যাখ্যা দেওয়া হলো।</p>
+        <div id="reviewList"></div>
+        <button class="btn btn-retake" id="btnRetake" type="button">আরেকটি পরীক্ষা দাও</button>
+        <button class="btn btn-history" id="btnResultHistory" type="button">আগের সব পরীক্ষা দেখো</button>
+      </section>
+
+      <!-- ============ HISTORY ============ -->
+      <section id="screen-history" class="hidden">
+        <div class="hist-card">
+          <button class="btn btn-small" id="btnHistoryBack" type="button">← ফিরে যাও</button>
+          <h2>আগের পরীক্ষা</h2>
+          <p class="hist-who">পরীক্ষার্থী: <b id="histName"></b></p>
+          <div id="histEmpty" class="notice-box hidden">এই নামে এখনো কোনো পরীক্ষা দেওয়া হয়নি — প্রথম পরীক্ষাটি দিলেই এখানে আগের ফলাফলের সারসংক্ষেপ ও চার্ট দেখা যাবে।</div>
+          <div id="histBody">
+            <div class="stat-row">
+              <div class="stat-box stat-none"><b id="histCount"></b><span>মোট পরীক্ষা</span></div>
+              <div class="stat-box stat-ok"><b id="histAvg"></b><span>গড় নম্বর</span></div>
+              <div class="stat-box stat-none"><b id="histBest"></b><span>সর্বোচ্চ</span></div>
+            </div>
+            <h3>সময়ের সাথে ফলাফল (%)</h3>
+            <div class="chart-box" id="histChartTime"></div>
+            <h3>বিষয়ভিত্তিক গড় (%)</h3>
+            <div class="chart-box" id="histChartSubject"></div>
+            <h3>বিষয়ভিত্তিক সারসংক্ষেপ</h3>
+            <div id="histSubjects"></div>
+            <h3>সব পরীক্ষার তালিকা</h3>
+            <div id="histList"></div>
+            <p class="device-note">এই ইতিহাস এই ডিভাইসে দেওয়া পরীক্ষাগুলোর ভিত্তিতে তৈরি।</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ADMIN LOGIN ============ -->
+      <section id="screen-admin-login" class="hidden">
+        <div class="start-card">
+          <h2 class="exam-title" style="font-size:23px;">অ্যাডমিন প্রবেশ</h2>
+          <p class="exam-sub" id="adminLoginNote">শুধুমাত্র শিক্ষকের জন্য</p>
+          <div class="field">
+            <label for="adminPwInput">পাসওয়ার্ড</label>
+            <input id="adminPwInput" type="password" placeholder="পাসওয়ার্ড লেখো" autocomplete="current-password" />
+            <p class="err" id="adminPwErr">পাসওয়ার্ড সঠিক নয় — আবার চেষ্টা করো।</p>
+          </div>
+          <button class="btn-start" id="btnAdminLogin" type="button">প্রবেশ করো</button>
+          <button class="btn btn-block" id="btnAdminBack" type="button">← হোমে ফিরে যাও</button>
+        </div>
+      </section>
+
+      <!-- ============ ADMIN PANEL ============ -->
+      <section id="screen-admin" class="hidden">
+        <div class="admin-card">
+          <h2>অ্যাডমিন প্যানেল</h2>
+          <div class="admin-nav">
+            <button class="btn" id="btnAdminHome" type="button">← হোম</button>
+            <button class="btn" id="btnAdminLogout" type="button">লগআউট</button>
+          </div>
+
+          <h3>নতুন পরীক্ষা তৈরি</h3>
+          <div class="field">
+            <label for="adSchool">স্কুল / বোর্ডের নাম</label>
+            <input id="adSchool" type="text" placeholder="যেমন: ঢাকা বোর্ড / ABC স্কুল" />
+          </div>
+          <div class="field">
+            <label for="adGroup">গ্রুপ</label>
+            <select id="adGroup">
+              <option value="">গ্রুপ বেছে নাও</option>
+              <option value="বিজ্ঞান">বিজ্ঞান (Science)</option>
+              <option value="মানবিক">মানবিক (Humanities)</option>
+              <option value="ব্যবসায় শিক্ষা">ব্যবসায় শিক্ষা (Business Studies)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="adSubject">বিষয়</label>
+            <select id="adSubject"><option value="">আগে গ্রুপ বেছে নাও</option></select>
+          </div>
+          <div class="field">
+            <label for="adChapter">অধ্যায়</label>
+            <input id="adChapter" type="text" placeholder="যেমন: চতুর্থ অধ্যায় — অর্থের সময়মূল্য" />
+          </div>
+          <div class="field">
+            <label for="adExamName">পরীক্ষার নাম</label>
+            <input id="adExamName" type="text" placeholder="যেমন: পরীক্ষা ৩" />
+          </div>
+          <div class="field">
+            <label for="adMinutes">সময় (মিনিট)</label>
+            <input id="adMinutes" type="number" min="1" max="300" value="30" inputmode="numeric" />
+          </div>
+
+          <h3>প্রশ্নের ছবি আপলোড</h3>
+          <div class="field">
+            <label for="adQFiles">প্রশ্নপত্রের ছবি (PNG / JPG / স্ক্রিনশট — একাধিক দেওয়া যাবে)</label>
+            <input id="adQFiles" type="file" accept="image/*" multiple />
+            <p class="status-line" id="adOcrStatus"></p>
+          </div>
+          <div class="notice-box">OCR ভুল করতে পারে — প্রকাশের আগে প্রতিটি প্রশ্ন ও উত্তর মিলিয়ে নিন।</div>
+          <div class="field" style="margin-top:14px;">
+            <label for="adRawText">ছবি থেকে পাওয়া লেখা (এখানে ঠিক করে নেওয়া যাবে)</label>
+            <textarea id="adRawText" placeholder="ছবি আপলোড করলে OCR-এর লেখা এখানে আসবে"></textarea>
+          </div>
+          <button class="btn btn-block" id="btnParse" type="button">টেক্সট থেকে প্রশ্ন তৈরি করো</button>
+          <p class="status-line" id="adQCount"></p>
+          <div id="adQList" style="margin-top:12px;"></div>
+          <button class="btn btn-block" id="btnAddQ" type="button">+ আরেকটি প্রশ্ন যোগ করো</button>
+
+          <h3>উত্তরপত্রের ছবি আপলোড</h3>
+          <div class="field">
+            <label for="adKeyFile">উত্তরমালা / উত্তরপত্রের ছবি</label>
+            <input id="adKeyFile" type="file" accept="image/*" />
+            <p class="status-line" id="adKeyStatus"></p>
+          </div>
+          <div class="notice-box">উত্তরপত্রের গোল-করা অক্ষর OCR প্রায়ই ভুল পড়ে — প্রতিটি উত্তরে ট্যাপ করে নিশ্চিত করুন।</div>
+
+          <button class="btn-start" id="btnSaveExam" type="button" style="margin-top:22px;">পরীক্ষা সংরক্ষণ করো</button>
+          <p class="status-line" id="adSaveStatus"></p>
+
+          <h3>এই ডিভাইসে সংরক্ষিত পরীক্ষা</h3>
+          <div class="notice-box">এই পরীক্ষাটি শুধু এই ডিভাইসে সংরক্ষিত হয়েছে — ছাত্রদের লিংকে দেখাতে হলে Export করে ফাইলটি Muse-কে পাঠাতে হবে।</div>
+          <div id="adSavedList" style="margin-top:12px;"></div>
+
+          <h3>পাসওয়ার্ড বদলান</h3>
+          <div class="field">
+            <label for="adNewPw">নতুন পাসওয়ার্ড</label>
+            <input id="adNewPw" type="password" placeholder="নতুন পাসওয়ার্ড লেখো" autocomplete="new-password" />
+          </div>
+          <button class="btn btn-block" id="btnChangePw" type="button">পাসওয়ার্ড বদলান</button>
+          <p class="status-line" id="adPwStatus"></p>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ CONFIRM MODAL ============ -->
+    <div class="overlay" id="overlay">
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <h3 id="modalTitle">জমা দিতে চাও?</h3>
+        <p id="modalText"></p>
+        <div class="mrow">
+          <button class="btn" id="btnCancelSubmit" type="button">ফিরে যাও</button>
+          <button class="btn btn-go" id="btnConfirmSubmit" type="button">জমা দাও</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
+    <script>
+      /* ============================================================
+         Supabase সংযোগ — ভবিষ্যতের জন্য প্রস্তুত, এখন নিষ্ক্রিয়।
+         শিক্ষক Supabase project তৈরি করে নিচের url ও anonKey বসালে
+         ছাত্রদের ফলাফল অনলাইনে সংরক্ষণের ব্যবস্থা পরে চালু করা যাবে।
+         যতক্ষণ দুটো ঘরই ফাঁকা, এই পেজ কোনো নেটওয়ার্ক কল করে না —
+         পরীক্ষার ফলাফল শুধু এই ডিভাইসেই সংরক্ষিত থাকে।
+         ============================================================ */
+      var SUPABASE_CONFIG = { url: "", anonKey: "" };
+
+      var BN = ["০","১","২","৩","৪","৫","৬","৭","৮","৯"];
+      function toBn(n) { return String(n).replace(/[0-9]/g, function (d) { return BN[+d]; }); }
+      var LETTERS = ["ক", "খ", "গ", "ঘ"];
+
+      var STIMULI = {
+        s45: { label: "উদ্দীপকটি পড়ে ৪ ও ৫ নং প্রশ্নের উত্তর দাও", text: "জনাব রায়হান বার্ষিক ১০% মুনাফায় ২,০০,০০০ টাকা কোনো ব্যাংকে জমা রাখতে চান। তার বন্ধুর প্রস্তাব ছিল এই টাকায় জমি কিনলে ৬ বছর পর তার বিনিয়োগকৃত টাকা দ্বিগুণ হবে। সে তার বন্ধুর প্রস্তাবটি গ্রহণ করেছে।" },
+        s1213: { label: "উদ্দীপকটি পড়ে ১২ ও ১৩ নং প্রশ্নের উত্তর দাও", text: "সাবিত এন্ড কোং লিমিটেড ২,০০,০০০ টাকা ব্যয়ে একটি মেশিন ক্রয় করতে চায়। মেশিনটির আয়ুষ্কাল ৫ বছর। মেশিনটির ভগ্নাবশেষ মূল্য হবে ২০,০০০ টাকা। সরলরৈখিক পদ্ধতিতে অবচয় ধার্য করা হয়।" },
+        s2425: { label: "উদ্দীপকটি পড়ে ২৪ ও ২৫ নং প্রশ্নের উত্তর দাও", text: "জনাব সজিব তিস্তা ব্যাংকের একজন গ্রাহক। সম্প্রতি তিনি এই ব্যাংক থেকে একটি ব্যাংকিং পণ্য নিয়েছেন যা তিনি কেবল তখনই ব্যবহার করতে পারবেন যদি তার অ্যাকাউন্টে টাকা থাকে।" }
+      };
+
+      var QUESTIONS = [
+        { q: "১৫% সুদের হারে ৫,০০,০০০ টাকা ঋণ গ্রহণের জন্য ঋণগ্রহীতাকে আগামী ১২ বছর পর কত টাকা প্রদান করতে হবে?",
+          o: ["২,২২,৯২৭ টাকা", "২৬,৭৫,১২৫ টাকা", "৩০,২৪,০৫০ টাকা", "২৯,৭৫,১২৫ টাকা"], a: 1,
+          e: "চক্রবৃদ্ধি সুদে ভবিষ্যৎ মূল্য = ৫,০০,০০০ × (১.১৫)¹² = ২৬,৭৫,১২৫ টাকা।" },
+        { q: "কোন সুদের ক্ষেত্রে কোনো আসলের ওপর সুদ গণনা করা হয়?",
+          o: ["মূল সুদ", "চক্রবৃদ্ধি", "সরল সুদ", "আসল সুদ"], a: 1,
+          e: "চক্রবৃদ্ধি সুদে সুদের ওপরও সুদ ধরা হয়।" },
+        { q: "অর্থের সময়মূল্য নির্ণয়ে প্রভাববিস্তারকারী উপাদান হলো—\ni. সুদের হার\nii. সময়\niii. অর্থের তারল্য\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 0,
+          e: "সময়মূল্যের মূল কারণ সুদের হার, আর মূল্য সময়ের সঙ্গে বদলায়।" },
+        { stim: "s45",
+          q: "জনাব রায়হান ৩ বছর পর কত টাকা মুনাফা পাবেন?",
+          o: ["৬৬,০০০", "৬৬,২০০", "২,৬৬,০০০", "২,৬৬,২০০"], a: 1,
+          e: "১০% চক্রবৃদ্ধি হারে ৩ বছরের মুনাফা = ২,০০,০০০ × (১.১)³ − ২,০০,০০০ = ৬৬,২০০ টাকা। (২,৬৬,২০০ টাকা সুদাসল, মুনাফা নয়।)" },
+        { stim: "s45",
+          q: "উদ্দীপক অনুযায়ী—\ni. জমি ক্রয়ের ক্ষেত্রে সুদের হার ৯%\nii. জনাব রায়হানের সুযোগ ব্যয় ১০%\niii. জনাব রায়হানের বিনিয়োগ সিদ্ধান্ত সঠিক\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 2,
+          e: "৭২-নিয়মে জমির হার ৭২ ÷ ৬ = ১২% (৯% নয়); সুযোগ ব্যয় ব্যাংকের ১০%; জমিতে লাভ বেশি বলে সিদ্ধান্ত সঠিক।" },
+        { q: "হক প্রতিষ্ঠানের গড় থেকে আয়ের ব্যবধানের বর্গের গড় ১৬৭.৭৫। প্রতিষ্ঠানটির আদর্শ বিচ্যুতি কত হবে?",
+          o: ["১২.৯৫%", "১৩.৯৫%", "১২.৫৯%", "১৩.৫৯%"], a: 0,
+          e: "আদর্শ বিচ্যুতি = √১৬৭.৭৫ ≈ ১২.৯৫%।" },
+        { q: "ব্যবসায়িক ঝুঁকির উৎসসমূহ হলো—\ni. অতিরিক্ত স্থায়ী খরচের প্রবণতা\nii. বিক্রয়ের পরিমাণ পরিবর্তন\niii. বিক্রয় আয়ে স্থিতিশীলতা\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 0,
+          e: "বই অনুযায়ী ব্যবসায়িক ঝুঁকির উৎস অতিরিক্ত স্থায়ী খরচ ও বিক্রয়ের পরিমাণ পরিবর্তন; বিক্রয় আয়ের স্থিতিশীলতা ঝুঁকি নয়।" },
+        { q: "আদর্শ বিচ্যুতি কোন ধরনের পদ্ধতি?",
+          o: ["পরিসংখ্যানগত পদ্ধতি", "অর্থায়ন পদ্ধতি", "গাণিতিক পদ্ধতি", "জ্যামিতিক পদ্ধতি"], a: 0, e: "" },
+        { q: "ঝুঁকি তৈরি হয়—\ni. সামাজিক দৃষ্টিভঙ্গিতে পরিবর্তন হলে\nii. দুর্ঘটনাজনিত কারণে\niii. নতুন পণ্যের উপস্থিতিতে\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "বই অনুযায়ী সামাজিক দৃষ্টিভঙ্গির পরিবর্তন, দুর্ঘটনা ও নতুন পণ্যের আগমন — সবই ঝুঁকি তৈরি করে।" },
+        { q: "মূলধন বাজেটিং কী ধরনের সিদ্ধান্ত?",
+          o: ["ঝুঁকিমুক্ত", "ঝুঁকিযুক্ত", "লাভজনক", "অলাভজনক"], a: 1,
+          e: "মূলধন বাজেটিং দীর্ঘমেয়াদি ও অনিশ্চিত, তাই ঝুঁকিযুক্ত সিদ্ধান্ত।" },
+        { q: "৩ বছর মেয়াদি একটি প্রকল্পের নিট মুনাফা ৭০,৫০০ টাকা। এর বিনিয়োগ ৩,০০,০০০ টাকা। এই প্রকল্পের গড় মুনাফার হার কত?",
+          o: ["১১.৭৫%", "২৩.৫০%", "৪৭.০০%", "৭০.৫০%"], a: 2,
+          e: "গড় মুনাফার হার = গড় মুনাফা ÷ গড় বিনিয়োগ = ৭০,৫০০ ÷ ১,৫০,০০০ = ৪৭% (গড় বিনিয়োগ = ৩,০০,০০০ ÷ ২)।" },
+        { stim: "s1213",
+          q: "মেশিনটির বার্ষিক অবচয়ের পরিমাণ কত?",
+          o: ["২০,০০০", "২৬,০০০", "৩০,০০০", "৩৬,০০০"], a: 3,
+          e: "(২,০০,০০০ − ২০,০০০) ÷ ৫ = ৩৬,০০০ টাকা।" },
+        { stim: "s1213",
+          q: "প্রকল্পটির গড় বিনিয়োগ কত?",
+          o: ["১,১০,০০০", "১,২০,০০০", "১,৩০,০০০", "১,৮০,০০০"], a: 0,
+          e: "(২,০০,০০০ + ২০,০০০) ÷ ২ = ১,১০,০০০ টাকা।" },
+        { q: "কোনটি বাণিজ্যিক ব্যাংকের নীতিবহির্ভূত?",
+          o: ["ঋণ নিয়ন্ত্রণ নীতি", "সচ্ছলতার নীতি", "মুনাফার নীতি", "নিরাপত্তার নীতি"], a: 0,
+          e: "নিরাপত্তা, মুনাফা ও সচ্ছলতা ব্যাংকিং ব্যবসার নীতি; ঋণ নিয়ন্ত্রণ নীতি নয়।" },
+        { q: "“পারস্পরিক উন্নতিসাধন” কোন ব্যাংকের মুখ্য উদ্দেশ্য?",
+          o: ["একক ব্যাংক", "শাখা ব্যাংক", "চেইন ব্যাংক", "গ্রুপ ব্যাংক"], a: 2,
+          e: "বই অনুযায়ী চেইন ব্যাংকিংয়ের মূল উদ্দেশ্য পরস্পরের স্বার্থ রক্ষা করা।" },
+        { q: "ব্যাংক ব্যবস্থার প্রাণকেন্দ্র কোনটি?",
+          o: ["বাণিজ্যিক ব্যাংক", "কেন্দ্রীয় ব্যাংক", "কৃষি ব্যাংক", "শিল্প ব্যাংক"], a: 1, e: "" },
+        { q: "গ্রাহকদের পক্ষে ব্যাংকের উদ্দেশ্যাবলি হচ্ছে—\ni. আমানত সৃষ্টি\nii. প্রতিনিধিত্ব\niii. অর্থ স্থানান্তর\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "আমানত সৃষ্টি, প্রতিনিধিত্ব ও অর্থ স্থানান্তর — তিনটিই গ্রাহকের পক্ষে ব্যাংকের কাজ।" },
+        { q: "LC কার অনুকূলে ইস্যু করা হয়?",
+          o: ["আমদানিকারকের", "রপ্তানিকারকের", "সরকারের", "উৎপাদনকারীর"], a: 1,
+          e: "ঋণপত্র (LC) রপ্তানিকারকের অনুকূলে ইস্যু করা হয়।" },
+        { q: "বাণিজ্যিক ব্যাংকের ব্যয়ের খাত কোনটি?",
+          o: ["প্রদত্ত ঋণের সুদ", "লকার ভাড়া", "বিমা প্রিমিয়াম", "বৈদেশিক মুদ্রার বিনিময়"], a: 2,
+          e: "প্রদত্ত ঋণের সুদ ও লকার ভাড়া ব্যাংকের আয়; বিমা প্রিমিয়াম ব্যাংকের ব্যয়।" },
+        { q: "বাণিজ্যিক ব্যাংকের তহবিল সংগ্রহের অভ্যন্তরীণ উৎস কোনটি?",
+          o: ["ঋণ গ্রহণের মাধ্যমে", "বিল বাট্টাকরণের মাধ্যমে", "আমানত", "সংরক্ষিত তহবিল"], a: 3,
+          e: "মালিকের তহবিল অভ্যন্তরীণ উৎস; সংরক্ষিত তহবিল মুনাফা থেকে তৈরি অভ্যন্তরীণ তহবিল। আমানত পাওনাদারদের টাকা, তাই বাহ্যিক উৎস।" },
+        { q: "দেনা-পাওনা নিষ্পত্তির মাধ্যম হিসেবে ব্যবহৃত হয়—\ni. চেক\nii. বিনিময় বিল\niii. ডেবিট কার্ড\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "বই অনুযায়ী চেক, বিনিময় বিল ও ডেবিট কার্ড — তিনটিই লেনদেনের মাধ্যম।" },
+        { q: "কোন মাধ্যমে যেকোনো সময় রেমিট্যান্স পাঠানো যেতে পারে?",
+          o: ["ই-ব্যবসা", "ই-মেইল", "ই-ব্যাংকিং", "অনলাইন ব্যাংকিং"], a: 3, e: "" },
+        { q: "একজন শিক্ষকের জন্য কোন হিসাব প্রযোজ্য?",
+          o: ["স্থায়ী", "সঞ্চয়ী", "চলতি", "ঋণ আমানত"], a: 1,
+          e: "বেতনভোগীদের জন্য সঞ্চয়ী হিসাব।" },
+        { stim: "s2425",
+          q: "জনাব সজিব কোন ব্যাংকিং পণ্য নিয়েছেন?",
+          o: ["ডেবিট কার্ড", "ক্রেডিট কার্ড", "এটিএম", "পাস বই"], a: 0,
+          e: "ডেবিট কার্ড অ্যাকাউন্টে টাকা থাকলেই ব্যবহার করা যায়।" },
+        { stim: "s2425",
+          q: "এই ব্যাংকিং পণ্য ব্যবহারের ফলে জনাব সজিবের জন্য—\ni. লেনদেনের নিরাপত্তা বৃদ্ধি পেয়েছে\nii. দৈনন্দিন জীবনযাত্রা আরামদায়ক হয়েছে\niii. ঋণ গ্রহণ সহজ হয়েছে\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 0,
+          e: "ডেবিট কার্ডে লেনদেন নিরাপদ ও জীবনযাত্রা আরামদায়ক হয়; ঋণ গ্রহণ সহজ হয় না — সেটা ক্রেডিট কার্ডের সুবিধা।" },
+        { q: "আধুনিক অর্থায়নের যাত্রা হয় কোন দশকে?",
+          o: ["১৯৩০ দশকে", "১৯৪০ দশকে", "১৯৫০ দশকে", "১৯৬০ দশকে"], a: 2, e: "" },
+        { q: "কোন উদ্দেশ্যে সরকারি অর্থায়ন করা হয়?",
+          o: ["মুনাফা অর্জন", "ব্যবসায় সম্প্রসারণ", "সমাজকল্যাণ", "স্থায়ী সম্পত্তি ক্রয়"], a: 2,
+          e: "সরকারি অর্থায়নের উদ্দেশ্য সমাজকল্যাণ, মুনাফা নয়।" },
+        { q: "WTO-এর আত্মপ্রকাশের ফলে কী ঘটে?",
+          o: ["শেয়ারের দর বৃদ্ধি পায়", "মূলধন কাঠামো গণিত নির্ভর হয়", "আমদানি-রপ্তানির প্রতিবন্ধকতা হ্রাস পায়", "দীর্ঘমেয়াদি বিনিয়োগ বৃদ্ধি পায়"], a: 2, e: "" },
+        { q: "একাধিক উৎস থেকে তহবিল সংগ্রহ করলে এর প্রভাব কী হবে?",
+          o: ["ঝুঁকি কমবে", "মুনাফা কমবে", "মুনাফা বাড়বে", "ঝুঁকি বাড়বে"], a: 0,
+          e: "একাধিক উৎস থেকে তহবিল নিলে ঝুঁকি ছড়িয়ে যায়, তাই ঝুঁকি কমে।" },
+        { q: "তারল্য বৃদ্ধি পেলে—\ni. মুনাফা হ্রাস পায়\nii. মুনাফা বৃদ্ধি পায়\niii. ব্যয় হ্রাস পায়\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 1,
+          e: "তারল্য ও মুনাফার মধ্যে বিপরীত সম্পর্ক — তারল্য বাড়লে মুনাফা কমে (i সঠিক, ii ভুল)।" }
+      ];
+
+      /* ================= EXAM 2 — চতুর্থ অধ্যায়: অর্থের সময়মূল্য ================= */
+      var STIMULI2 = {
+        s1011: { label: "উদ্দীপকটি পড়ে ১০ ও ১১ নং প্রশ্নের উত্তর দাও", text: "মি. নয়ন উত্তরা ব্যাংক থেকে ৭% হারে ত্রৈমাসিক চক্রবৃদ্ধিতে ৪,০০০ টাকা ঋণ নিলেন।" },
+        s1920: { label: "উদ্দীপকটি পড়ে ১৯ ও ২০ নং প্রশ্নের উত্তর দাও", text: "জনাব আমান একজন কাপড় ব্যবসায়ী। তিনি মাসিক ১২% সুদে ২,০০০ টাকা ২ বছরের জন্য ব্যাংকে জমা রাখেন।" },
+        s2930: { label: "উদ্দীপকটি পড়ে ২৯ ও ৩০ নং প্রশ্নের উত্তর দাও", text: "মুক্তা ১২,০০০ টাকা ৫ বছরের জন্য ১০% চক্রবৃদ্ধি সুদে একটি প্রকল্পে বিনিয়োগ করেন। তিনি ৫ বছর পর যে টাকা পান তা ১২ বছরের জন্য ১৫% চক্রবৃদ্ধি সুদে আরেকটি প্রকল্পে বিনিয়োগ করেন।" }
+      };
+
+      var QUESTIONS2 = [
+        { q: "EAR-এর পূর্ণরূপ কোনটি?",
+          o: ["Equal Annual Rate", "Effective Annuity Rate", "Effective Annual Rate", "Excess Annual Rate"], a: 2,
+          e: "EAR = Effective Annual Rate (প্রকৃত বার্ষিক সুদের হার)।" },
+        { q: "একাধিকবার চক্রবৃদ্ধির ক্ষেত্রে কোনটির মাধ্যমে বর্তমান মূল্য নির্ধারণ করা হয়?",
+          o: ["সুদ", "আসল", "সুদাসল", "বাট্টাকরণ"], a: 3,
+          e: "বর্তমান মূল্য নির্ণয় করা হয় বাট্টাকরণ (discounting) পদ্ধতিতে।" },
+        { q: "জনতা ব্যাংক ৬ বছরে দ্বিগুণ শর্তে জনগণের নিকট থেকে টাকা নিচ্ছে। এতে সুদের হার কত?",
+          o: ["১০%", "১২%", "১৪%", "১৬%"], a: 1,
+          e: "৭২-নিয়মে হার = ৭২ ÷ ৬ = ১২%।" },
+        { q: "ভবিষ্যৎ মূল্য নির্ধারণের জন্য ব্যবহৃত পদ্ধতিকে কী বলা হয়?",
+          o: ["সুদ প্রক্রিয়া", "বাট্টাকরণ", "মেয়াদি প্রক্রিয়া", "চক্রবৃদ্ধিকরণ পদ্ধতি"], a: 3,
+          e: "ভবিষ্যৎ মূল্য নির্ণয়ে চক্রবৃদ্ধিকরণ (compounding) পদ্ধতি ব্যবহৃত হয়।" },
+        { q: "বাট্টাকরণ পদ্ধতিতে কী নির্ণয় করা হয়?",
+          o: ["ভবিষ্যৎ মূল্য", "বর্তমান মূল্য", "সুদের হার", "সুদাসল"], a: 1,
+          e: "বাট্টাকরণে ভবিষ্যৎ মূল্য থেকে বর্তমান মূল্য বের করা হয়।" },
+        { q: "অর্থের দ্রুত চক্রবৃদ্ধি হলে, কোন মূল্য কমে যাবে?",
+          o: ["বর্তমান", "ভবিষ্যৎ", "প্রকৃত সুদের হার", "বর্তমান ও ভবিষ্যৎ"], a: 0,
+          e: "চক্রবৃদ্ধি দ্রুত হলে বাট্টার হার বাড়ে, তাই বর্তমান মূল্য কমে যায়।" },
+        { q: "অর্থের সময়মূল্য গুরুত্বপূর্ণ, কারণ—\ni. সুযোগ ব্যয়\nii. প্রকল্প মূল্যায়ন\niii. ঋণ গ্রহণ সিদ্ধান্ত\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "ii ও iii", "i ও iii", "i, ii ও iii"], a: 3,
+          e: "বই অনুযায়ী সময়মূল্য গুরুত্বপূর্ণ তিন কারণেই — সুযোগ ব্যয় নির্ণয়, প্রকল্প মূল্যায়ন ও ঋণ গ্রহণ সিদ্ধান্ত। (বইয়ের ছাপা উত্তরমালায় খ দেওয়া আছে, সেটি ভুল।)" },
+        { q: "ত্রৈমাসিক চক্রবৃদ্ধিতে m এর মান কত?",
+          o: ["৩", "৪", "৬", "১২"], a: 1,
+          e: "বছরে ৪টি ত্রৈমাস, তাই m = ৪।" },
+        { q: "যদি অর্ধবার্ষিক সুদ গণনা করা হয় তাহলে 'm' এর মান কত হবে?",
+          o: ["২", "৪", "৬", "১২"], a: 0,
+          e: "বছরে ২ বার অর্ধবার্ষিক, তাই m = ২।" },
+        { stim: "s1011",
+          q: "মি. নয়নকে ৫ বছর পর কত টাকা ফেরত দিতে হবে?",
+          o: ["৪,৩৬২ টাকা", "৪,৯২৭ টাকা", "৫,১৮৯ টাকা", "৫,৬৫৯ টাকা"], a: 3,
+          e: "ত্রৈমাসিক হার ৭% ÷ ৪ = ১.৭৫%, মেয়াদ ৫ × ৪ = ২০ কিস্তি; ৪,০০০ × (১.০১৭৫)²⁰ ≈ ৫,৬৫৯ টাকা।" },
+        { stim: "s1011",
+          q: "মি. নয়নের প্রকৃত সুদের হার কত হবে?",
+          o: ["১৭.১৯%", "১৭.২৯%", "২৮.১৯%", "৩১.০৮%"], a: 0,
+          e: "প্রকৃত হার = (১ + ০.০৭/৪)⁴ − ১ ≈ ৭.১৯%; অপশনে ১৭.১৯% ছাপা হয়েছে (৭.১৯%-এর আগে ১ বেশি ছাপা)। বইয়ের উত্তরমালায় খ দেওয়া আছে, সেটি ভুল — সঠিক মান ৭.১৯%।" },
+        { q: "চক্রবৃদ্ধি সুদ প্রদান করা হয় কীসের ওপর?",
+          o: ["মূলধনের ওপর", "বিনিয়োগের ওপর", "সুদাসলের ওপর", "আসলের ওপর"], a: 2,
+          e: "চক্রবৃদ্ধি সুদে সুদ ধরা হয় সুদাসলের (আসল + সুদ) ওপর।" },
+        { q: "সুদের হার ৮% হলে ১ বছর পরের ১০৮ টাকার বর্তমান মূল্য কত?",
+          o: ["৯২ টাকা", "১০০ টাকা", "১০৮ টাকা", "১১৬ টাকা"], a: 1,
+          e: "বর্তমান মূল্য = ১০৮ ÷ ১.০৮ = ১০০ টাকা।" },
+        { q: "অর্থ বিনিয়োগ না করলে কোনটি সৃষ্টি হয়?",
+          o: ["সুযোগ ব্যয়", "মুনাফা", "চলতি ব্যয়", "দায়"], a: 0,
+          e: "বিনিয়োগ না করলে বিকল্প আয়ের সুযোগ হারানো যায় — সেটাই সুযোগ ব্যয়।" },
+        { q: "বর্তমান মূল্য নির্ণয়ে প্রয়োজন হয়—\ni. ভবিষ্যৎ মূল্য\nii. সুদের হার\niii. মেয়াদ\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "বর্তমান মূল্য = ভবিষ্যৎ মূল্য ÷ (১ + সুদের হার)^মেয়াদ — তিনটিই লাগে। (বইয়ের ছাপা উত্তরমালায় খ দেওয়া আছে, সেটি ভুল।)" },
+        { q: "সাপ্তাহিক ১% হারে সুদ নিলে বার্ষিক সুদ হবে—",
+          o: ["৭%", "১২%", "৫২%", "৬৫%"], a: 2,
+          e: "বছরে ৫২ সপ্তাহ, তাই ১% × ৫২ = ৫২%।" },
+        { q: "বার্ষিক সুদের হার প্রকাশে কোনটি ব্যবহৃত হয়?",
+          o: ["r", "n", "i", "m"], a: 2,
+          e: "সুদের হার প্রকাশ করা হয় i দিয়ে (n মেয়াদ, m চক্রবৃদ্ধির সংখ্যা)।" },
+        { q: "অর্থায়নে প্রতিটি সিদ্ধান্ত কীসের ভিত্তিতে গৃহীত হয়?",
+          o: ["অর্থের সময়মূল্য", "সাংগঠনিক কাঠামো", "মানবসম্পদ দক্ষতা", "আর্থিক পরিকল্পনা"], a: 0,
+          e: "অর্থায়নের প্রতিটি সিদ্ধান্ত অর্থের সময়মূল্যের ভিত্তিতে নেওয়া হয়।" },
+        { stim: "s1920",
+          q: "উদ্দীপক অনুযায়ী চক্রবৃদ্ধির সংখ্যা কত?",
+          o: ["৬", "১২", "১৮", "২৪"], a: 1,
+          e: "মাসিক চক্রবৃদ্ধিতে বছরে চক্রবৃদ্ধির সংখ্যা (m) = ১২।" },
+        { stim: "s1920",
+          q: "জনাব আমান ২ বছর পর ব্যাংক থেকে কত টাকা পাবেন?",
+          o: ["২,৫০০ টাকা", "২,৫৮০ টাকা", "২,৫৩৯ টাকা", "২,৫৫০ টাকা"], a: 2,
+          e: "বার্ষিক ১২% হারে মাসিক চক্রবৃদ্ধি — মাসিক হার ১%, মেয়াদ ২৪ মাস; ২,০০০ × (১.০১)²⁴ ≈ ২,৫৩৯ টাকা।" },
+        { q: "ব্যাংকে টাকা জমা রাখলে কীসের ভিত্তিতে চক্রবৃদ্ধি হয়?",
+          o: ["সাপ্তাহিক ভিত্তিতে", "দৈনিক ভিত্তিতে", "মাসিক ভিত্তিতে", "বার্ষিক ভিত্তিতে"], a: 2,
+          e: "ব্যাংকে জমা টাকার সুদ মাসিক ভিত্তিতে চক্রবৃদ্ধি হয়।" },
+        { q: "সুযোগ ব্যয়কে অর্থায়নে কী বলা হয়?",
+          o: ["আন্তঃপ্রবাহ", "বহিঃপ্রবাহ", "সময়মূল্য", "বিনিয়োগ সিদ্ধান্ত"], a: 2,
+          e: "অর্থের সুযোগ ব্যয়ই তার সময়মূল্য।" },
+        { q: "কেবল আসলের ওপর যে সুদ ধার্য করা হয় তাকে বলে—",
+          o: ["মোট সুদ", "নিট সুদ", "সরল সুদ", "চক্রবৃদ্ধি সুদ"], a: 2,
+          e: "কেবল আসলের ওপর ধার্য সুদই সরল সুদ।" },
+        { q: "সুদ আসলকে (1 + i)^n দিয়ে ভাগ করলে কী পাওয়া যায়?",
+          o: ["চক্রবৃদ্ধি সুদ", "বর্তমান মূল্য", "ভবিষ্যৎ মূল্য", "প্রকৃত সুদের হার"], a: 1,
+          e: "ভবিষ্যৎ মূল্য ÷ (১ + i)^n = বর্তমান মূল্য।" },
+        { q: "চক্রবৃদ্ধি প্রক্রিয়া হলো—\ni. অর্থের ভবিষ্যৎ মূল্য নির্ধারণ\nii. সুদাসলের ওপর সুদ ধার্যকরণ\niii. অর্থের বর্তমান মূল্য নির্ধারণ\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 0,
+          e: "চক্রবৃদ্ধিতে ভবিষ্যৎ মূল্য নির্ণয় হয় ও সুদাসলের ওপর সুদ ধরা হয়; বর্তমান মূল্য নির্ণয় বাট্টাকরণের কাজ।" },
+        { q: "ভবিষ্যৎ মূল্য বের করার সূত্র কোনটি?",
+          o: ["FV = PV(1+i)^n", "PV = FV/(1+i)^n", "FV = PV(1 + i/m)^(n×m)", "FV = PV/(1+i)^n"], a: 0,
+          e: "ভবিষ্যৎ মূল্যের মূল সূত্র FV = PV(1+i)^n।" },
+        { q: "অর্থের সময়মূল্যের ধারণা প্রয়োজন—\ni. দৈনন্দিন জীবনে\nii. প্রকল্প প্রণয়নে\niii. প্রাতিষ্ঠানিক ক্ষেত্রে\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "ii ও iii", "i ও iii", "i, ii ও iii"], a: 3,
+          e: "বই অনুযায়ী সময়মূল্যের ধারণা দৈনন্দিন জীবনেও দরকার, প্রকল্প প্রণয়ন ও প্রাতিষ্ঠানিক ক্ষেত্রেও। (বইয়ের ছাপা উত্তরমালায় খ দেওয়া আছে, সেটি ভুল।)" },
+        { q: "রুল-৭২ অনুযায়ী ২০,০০০ টাকা ৯% সুদের হারে কত বছরে দ্বিগুণ হবে?",
+          o: ["৭ বছর", "৮ বছর", "৯ বছর", "১১ বছর"], a: 1,
+          e: "৭২ ÷ ৯ = ৮ বছর।" },
+        { stim: "s2930",
+          q: "মুক্তা ৫ বছর পর কত টাকা পাবেন?",
+          o: ["২০,০৩৬ টাকা", "১৯,৩২৬ টাকা", "১৮,৪৭৭ টাকা", "১৭,৬১৫ টাকা"], a: 1,
+          e: "১২,০০০ × (১.১০)⁵ ≈ ১৯,৩২৬ টাকা।" },
+        { stim: "s2930",
+          q: "১৭ বছর পর মুক্তা সর্বমোট কত টাকা পাবেন?",
+          o: ["১,০০,০০০ টাকা", "১,০১,৪০০ টাকা", "১,০৩,০০০ টাকা", "১,০৩,৪০০ টাকা"], a: 3,
+          e: "৫ বছর পর ১৯,৩২৬ টাকা, আরও ১২ বছর ১৫% হারে: ১৯,৩২৬ × (১.১৫)¹² ≈ ১,০৩,৪০০ টাকা।" }
+      ];
+
+      var EXAMS = [
+        { label: "পরীক্ষা ১", sub: "বহুনির্বাচনি অভীক্ষা",
+          meta1: "১৫২", meta1Label: "বিষয় কোড", stimuli: STIMULI, questions: QUESTIONS },
+        { label: "পরীক্ষা ২", sub: "অধ্যায়ভিত্তিক মডেল টেস্ট",
+          meta1: "অধ্যায় ৪", meta1Label: "চতুর্থ অধ্যায়", stimuli: STIMULI2, questions: QUESTIONS2 }
+      ];
+      var selectedExam = 0;
+
+      var TOTAL = QUESTIONS.length;
+      var DURATION = 30 * 60;
+      var studentName = "";
+      var answers = [];
+      var current = 0;
+      var remaining = DURATION;
+      var timerId = null;
+      var submitted = false;
+
+      var el = function (id) { return document.getElementById(id); };
+
+      function answeredCount() {
+        var c = 0;
+        for (var i = 0; i < TOTAL; i++) if (answers[i] !== null && answers[i] !== undefined) c++;
+        return c;
+      }
+
+      function fmtTime(sec) {
+        var m = Math.floor(sec / 60), s = sec % 60;
+        return toBn((m < 10 ? "0" : "") + m) + ":" + toBn((s < 10 ? "0" : "") + s);
+      }
+
+      function renderQuestion() {
+        var item = QUESTIONS[current];
+        el("qNumLabel").textContent = "প্রশ্ন " + toBn(current + 1);
+        el("qCountLabel").textContent = toBn(current + 1) + " / " + toBn(TOTAL);
+        if (item.stim) {
+          var st = STIMULI[item.stim];
+          el("stimulusLabel").textContent = st.label;
+          el("stimulusText").textContent = st.text;
+          el("stimulusBox").classList.remove("hidden");
+        } else {
+          el("stimulusBox").classList.add("hidden");
+        }
+        el("qText").textContent = item.q;
+        var box = el("optionsBox");
+        box.innerHTML = "";
+        item.o.forEach(function (optText, idx) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "opt" + (answers[current] === idx ? " selected" : "");
+          b.setAttribute("aria-pressed", answers[current] === idx ? "true" : "false");
+          var lt = document.createElement("span");
+          lt.className = "letter"; lt.textContent = LETTERS[idx];
+          var tx = document.createElement("span");
+          tx.textContent = LETTERS[idx] + ") " + optText;
+          // letter circle already shows the letter; keep text without duplicate prefix
+          tx.textContent = optText;
+          b.appendChild(lt); b.appendChild(tx);
+          b.addEventListener("click", function () { selectOption(idx); });
+          box.appendChild(b);
+        });
+        el("btnPrev").disabled = current === 0;
+        el("btnNext").disabled = current === TOTAL - 1;
+        updateTop();
+        renderPalette();
+      }
+
+      function updateTop() {
+        var done = answeredCount();
+        el("whoProgress").textContent = "উত্তর দেওয়া হয়েছে: " + toBn(done) + " / " + toBn(TOTAL);
+        el("progressFill").style.width = (done / TOTAL * 100) + "%";
+      }
+
+      function renderPalette() {
+        var grid = el("paletteGrid");
+        grid.innerHTML = "";
+        for (var i = 0; i < TOTAL; i++) {
+          (function (idx) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.className = "pbtn" + (answers[idx] !== null && answers[idx] !== undefined ? " done" : "") + (idx === current ? " current" : "");
+            b.textContent = toBn(idx + 1);
+            b.setAttribute("aria-label", "প্রশ্ন " + toBn(idx + 1));
+            b.addEventListener("click", function () { current = idx; renderQuestion(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+            grid.appendChild(b);
+          })(i);
+        }
+      }
+
+      function selectOption(idx) {
+        answers[current] = idx;
+        renderQuestion();
+      }
+
+      function tick() {
+        remaining--;
+        if (remaining <= 0) {
+          remaining = 0;
+          el("timerText").textContent = fmtTime(0);
+          finishExam(true);
+          return;
+        }
+        el("timerText").textContent = fmtTime(remaining);
+        if (remaining < 300) el("timerBox").classList.add("low");
+      }
+
+      function startExam() {
+        var name = el("studentName").value.trim();
+        if (!name) {
+          el("nameErr").style.display = "block";
+          el("studentName").focus();
+          return;
+        }
+        el("nameErr").style.display = "none";
+        studentName = name;
+        var ex = activeExams[selectedExam];
+        if (!ex) return;
+        currentExam = ex;
+        examSubject = selectedSubject || "";
+        examGroupName = selectedGroup >= 0 ? GROUPS[selectedGroup].name : "";
+        DURATION = (ex.minutes || 30) * 60;
+        QUESTIONS = ex.questions;
+        STIMULI = ex.stimuli;
+        TOTAL = QUESTIONS.length;
+        answers = [];
+        for (var i = 0; i < TOTAL; i++) answers.push(null);
+        current = 0; remaining = DURATION; submitted = false;
+        el("whoName").textContent = studentName + " · " + ex.label;
+        el("timerText").textContent = fmtTime(remaining);
+        el("timerBox").classList.remove("low");
+        el("screen-start").classList.add("hidden");
+        el("screen-result").classList.add("hidden");
+        el("screen-exam").classList.remove("hidden");
+        renderQuestion();
+        window.scrollTo({ top: 0 });
+        if (timerId) clearInterval(timerId);
+        timerId = setInterval(tick, 1000);
+      }
+
+      function requestSubmit() {
+        overlayAction = "submit";
+        var left = TOTAL - answeredCount();
+        if (left > 0) {
+          el("modalTitle").textContent = "জমা দিতে চাও?";
+          el("modalText").textContent = "এখনো " + toBn(left) + "টি প্রশ্নের উত্তর দেওয়া হয়নি। উত্তর না দেওয়া প্রশ্নে কোনো নম্বর পাওয়া যাবে না। তবুও জমা দেবে?";
+          el("overlay").classList.add("open");
+        } else {
+          el("modalTitle").textContent = "জমা দিতে চাও?";
+          el("modalText").textContent = "সব প্রশ্নের উত্তর দেওয়া হয়েছে। জমা দিলে আর উত্তর বদলানো যাবে না।";
+          el("overlay").classList.add("open");
+        }
+      }
+
+      function finishExam(auto) {
+        if (submitted) return;
+        submitted = true;
+        if (timerId) { clearInterval(timerId); timerId = null; }
+        el("overlay").classList.remove("open");
+        var ok = 0, bad = 0, none = 0;
+        for (var i = 0; i < TOTAL; i++) {
+          if (answers[i] === null || answers[i] === undefined) none++;
+          else if (answers[i] === QUESTIONS[i].a) ok++;
+          else bad++;
+        }
+        var pct = Math.round(ok / TOTAL * 100);
+        var used = DURATION - remaining;
+        saveAttempt({
+          name: studentName,
+          group: examGroupName,
+          subject: examSubject,
+          exam: currentExam.label,
+          date: new Date().toISOString(),
+          correct: ok,
+          total: TOTAL,
+          pct: pct,
+          seconds: used
+        });
+        el("resName").textContent = studentName;
+        el("resExamLine").textContent = currentExam.label + " — " + currentExam.sub;
+        el("resScore").textContent = toBn(ok);
+        el("resTotal").textContent = toBn(TOTAL);
+        el("resPct").textContent = "শতকরা " + toBn(pct) + "% নম্বর";
+        var verdict;
+        if (pct >= 80) verdict = "চমৎকার! খুব ভালো প্রস্তুতি।";
+        else if (pct >= 60) verdict = "ভালো হয়েছে — আরেকটু অনুশীলন করলেই আরও ভালো হবে।";
+        else if (pct >= 40) verdict = "মোটামুটি হয়েছে — ভুলগুলো নিচে দেখে আবার পড়ে নাও।";
+        else verdict = "আরও অনুশীলন দরকার — নিচের ব্যাখ্যাগুলো ভালো করে পড়ো।";
+        if (auto) verdict = "সময় শেষ হয়ে যাওয়ায় উত্তরপত্র নিজে থেকেই জমা হয়েছে। " + verdict;
+        el("resVerdict").textContent = verdict;
+        el("resOk").textContent = toBn(ok);
+        el("resBad").textContent = toBn(bad);
+        el("resNone").textContent = toBn(none);
+        el("resTime").textContent = "ব্যয়িত সময়: " + fmtTime(used) + " মিনিট";
+
+        var list = el("reviewList");
+        list.innerHTML = "";
+        QUESTIONS.forEach(function (item, i) {
+          var mine = answers[i];
+          var state = (mine === null || mine === undefined) ? "none" : (mine === item.a ? "ok" : "bad");
+          var card = document.createElement("div");
+          card.className = "rcard " + state;
+          var head = document.createElement("div");
+          head.className = "rhead";
+          var rn = document.createElement("span");
+          rn.className = "rnum"; rn.textContent = "প্রশ্ন " + toBn(i + 1);
+          var bd = document.createElement("span");
+          bd.className = "badge " + state;
+          bd.textContent = state === "ok" ? "✓ সঠিক" : (state === "bad" ? "✗ ভুল" : "উত্তর হয়নি");
+          head.appendChild(rn); head.appendChild(bd);
+          card.appendChild(head);
+          if (item.stim) {
+            var st = document.createElement("div");
+            st.className = "stimulus";
+            var sl = document.createElement("span");
+            sl.className = "st-label"; sl.textContent = STIMULI[item.stim].label;
+            var stx = document.createElement("span");
+            stx.textContent = STIMULI[item.stim].text;
+            st.appendChild(sl); st.appendChild(stx);
+            card.appendChild(st);
+          }
+          var rq = document.createElement("p");
+          rq.className = "rq"; rq.textContent = item.q;
+          card.appendChild(rq);
+          var yours = document.createElement("p");
+          yours.className = "rans" + (state === "bad" ? " yours-wrong" : "");
+          var yt = document.createElement("span");
+          yt.className = "tag"; yt.textContent = "তোমার উত্তর: ";
+          yours.appendChild(yt);
+          yours.appendChild(document.createTextNode(
+            (mine === null || mine === undefined) ? "উত্তর দেওয়া হয়নি" : LETTERS[mine] + ") " + item.o[mine]
+          ));
+          card.appendChild(yours);
+          var corr = document.createElement("p");
+          corr.className = "rans correct-line";
+          var ct = document.createElement("span");
+          ct.className = "tag"; ct.textContent = "সঠিক উত্তর: ";
+          corr.appendChild(ct);
+          corr.appendChild(document.createTextNode(LETTERS[item.a] + ") " + item.o[item.a]));
+          card.appendChild(corr);
+          if (item.e) {
+            var ex = document.createElement("div");
+            ex.className = "rexpl";
+            var eb = document.createElement("b"); eb.textContent = "ব্যাখ্যা: ";
+            ex.appendChild(eb);
+            ex.appendChild(document.createTextNode(item.e));
+            card.appendChild(ex);
+          }
+          list.appendChild(card);
+        });
+
+        el("screen-exam").classList.add("hidden");
+        el("screen-start").classList.add("hidden");
+        el("screen-result").classList.remove("hidden");
+        window.scrollTo({ top: 0 });
+      }
+
+      /* ================= GROUP → SUBJECT → EXAM selection ================= */
+      var COMMON_SUBJECTS = ["বাংলা ১ম পত্র", "বাংলা ২য় পত্র", "English 1st Paper", "English 2nd Paper", "গণিত", "বাংলাদেশ ও বিশ্বপরিচয়", "তথ্য ও যোগাযোগ প্রযুক্তি", "ইসলাম ও নৈতিক শিক্ষা", "হিন্দুধর্ম ও নৈতিক শিক্ষা", "কৃষি শিক্ষা", "গার্হস্থ্য বিজ্ঞান"];
+      var GROUPS = [
+        { name: "বিজ্ঞান", en: "Science", subjects: ["পদার্থবিজ্ঞান", "রসায়ন", "জীববিজ্ঞান", "উচ্চতর গণিত"] },
+        { name: "মানবিক", en: "Humanities", subjects: ["ইতিহাস", "ভূগোল ও পরিবেশ", "পৌরনীতি ও নাগরিকতা", "অর্থনীতি"] },
+        { name: "ব্যবসায় শিক্ষা", en: "Business Studies", subjects: ["ফিন্যান্স ও ব্যাংকিং", "হিসাববিজ্ঞান", "ব্যবসায় উদ্যোগ"] }
+      ];
+      var selectedGroup = -1;
+      var selectedSubject = null;
+      var activeExams = [];
+      var currentExam = null;
+      var examSubject = "";
+      var examGroupName = "";
+      var historyName = "";
+      var overlayAction = "submit";
+
+      var CUSTOM_KEY = "mrpe_custom_exams";
+      function loadCustomExams() {
+        try {
+          var v = JSON.parse(localStorage.getItem(CUSTOM_KEY) || "[]");
+          return (v && v.length !== undefined) ? v : [];
+        } catch (e) { return []; }
+      }
+      function saveCustomExams(list) {
+        try { localStorage.setItem(CUSTOM_KEY, JSON.stringify(list)); } catch (e) {}
+      }
+      function subjectsForGroup(gi) { return GROUPS[gi].subjects.concat(COMMON_SUBJECTS); }
+
+      function examsForSubject(subject) {
+        var list = [];
+        if (subject === "ফিন্যান্স ও ব্যাংকিং") {
+          for (var i = 0; i < EXAMS.length; i++) list.push(EXAMS[i]);
+        }
+        var customs = loadCustomExams();
+        for (var j = 0; j < customs.length; j++) {
+          if (customs[j].subject === subject) {
+            list.push({
+              label: customs[j].name,
+              sub: ((customs[j].school ? customs[j].school + " — " : "") + (customs[j].chapter || "বহুনির্বাচনি অভীক্ষা")),
+              meta1: customs[j].chapter || "—", meta1Label: "অধ্যায়",
+              stimuli: {}, questions: customs[j].questions,
+              minutes: customs[j].minutes || 30, custom: true, tag: "এই ডিভাইসে সংরক্ষিত"
+            });
+          }
+        }
+        return list;
+      }
+
+      function makeChoice(main, sub, selected, onClick) {
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "choice" + (selected ? " selected" : "");
+        b.setAttribute("role", "radio");
+        b.setAttribute("aria-checked", selected ? "true" : "false");
+        var r = document.createElement("span"); r.className = "radio";
+        var wrap = document.createElement("span");
+        var m = document.createElement("span"); m.className = "c-main"; m.textContent = main;
+        wrap.appendChild(m);
+        if (sub) {
+          var s = document.createElement("span"); s.className = "c-sub"; s.textContent = sub;
+          wrap.appendChild(s);
+        }
+        b.appendChild(r); b.appendChild(wrap);
+        b.addEventListener("click", onClick);
+        return b;
+      }
+
+      function renderGroups() {
+        var list = el("groupList");
+        list.innerHTML = "";
+        GROUPS.forEach(function (g, i) {
+          list.appendChild(makeChoice(g.name, g.en, i === selectedGroup, function () { selectGroup(i); }));
+        });
+        var chosen = selectedGroup >= 0;
+        el("groupList").classList.toggle("hidden", chosen);
+        el("groupChosenRow").classList.toggle("hidden", !chosen);
+        if (chosen) el("chosenGroupName").textContent = GROUPS[selectedGroup].name + " (" + GROUPS[selectedGroup].en + ")";
+      }
+
+      function selectGroup(i) {
+        selectedGroup = i;
+        selectedSubject = null;
+        activeExams = [];
+        selectedExam = 0;
+        renderGroups();
+        renderSubjects();
+        el("subjectGroup").classList.remove("hidden");
+        el("examGroup").classList.add("hidden");
+        el("btnStart").disabled = true;
+        updateStartMeta();
+      }
+
+      function changeGroup() {
+        selectedGroup = -1;
+        selectedSubject = null;
+        activeExams = [];
+        selectedExam = 0;
+        renderGroups();
+        el("subjectGroup").classList.add("hidden");
+        el("examGroup").classList.add("hidden");
+        el("startTitle").textContent = "বহুনির্বাচনি পরীক্ষা";
+        el("startSub").textContent = "আগে গ্রুপ, তারপর বিষয় ও পরীক্ষা বেছে নাও";
+        el("btnStart").disabled = true;
+        updateStartMeta();
+      }
+
+      function renderSubjects() {
+        var list = el("subjectList");
+        list.innerHTML = "";
+        if (selectedGroup < 0) return;
+        subjectsForGroup(selectedGroup).forEach(function (s) {
+          var n = examsForSubject(s).length;
+          list.appendChild(makeChoice(s, n ? toBn(n) + "টি পরীক্ষা আছে" : "এখনো পরীক্ষা নেই", s === selectedSubject, function () { selectSubject(s); }));
+        });
+      }
+
+      function selectSubject(s) {
+        selectedSubject = s;
+        activeExams = examsForSubject(s);
+        selectedExam = 0;
+        renderSubjects();
+        el("examGroup").classList.remove("hidden");
+        el("startTitle").textContent = s;
+        el("startSub").textContent = "বহুনির্বাচনি অভীক্ষা";
+        renderExams();
+      }
+
+      function renderExams() {
+        var list = el("examList");
+        list.innerHTML = "";
+        activeExams.forEach(function (ex, i) {
+          var sub = ex.sub + (ex.tag ? " · " + ex.tag : "");
+          list.appendChild(makeChoice(ex.label, sub, i === selectedExam, function () { selectExam(i); }));
+        });
+        el("noExamBox").classList.toggle("hidden", activeExams.length > 0);
+        el("examList").classList.toggle("hidden", activeExams.length === 0);
+        el("btnStart").disabled = activeExams.length === 0;
+        updateStartMeta();
+      }
+
+      function selectExam(idx) {
+        selectedExam = idx;
+        renderExams();
+      }
+
+      function updateStartMeta() {
+        var ex = activeExams[selectedExam];
+        if (ex) {
+          el("startSub").textContent = ex.sub;
+          el("metaBox1").textContent = ex.meta1;
+          el("metaBox1Label").textContent = ex.meta1Label;
+          el("metaMarks").textContent = toBn(ex.questions.length);
+          var mins = ex.minutes || 30;
+          el("metaTime").textContent = toBn(mins) + " মিনিট";
+          el("ruleQ").textContent = "মোট " + toBn(ex.questions.length) + "টি প্রশ্ন, প্রতিটির মান ১।";
+          el("ruleTime").textContent = "সময় " + toBn(mins) + " মিনিট — সময় শেষ হলে উত্তরপত্র নিজে থেকেই জমা হয়ে যাবে।";
+        } else {
+          el("metaBox1").textContent = "—";
+          el("metaBox1Label").textContent = "বিষয়";
+          el("metaMarks").textContent = "৩০";
+          el("metaTime").textContent = "৩০ মিনিট";
+          el("ruleQ").textContent = "মোট ৩০টি প্রশ্ন, প্রতিটির মান ১।";
+          el("ruleTime").textContent = "সময় ৩০ মিনিট — সময় শেষ হলে উত্তরপত্র নিজে থেকেই জমা হয়ে যাবে।";
+        }
+      }
+
+      el("btnChangeGroup").addEventListener("click", changeGroup);
+      renderGroups();
+
+      /* ================= ATTEMPT HISTORY (আগের পরীক্ষা) =================
+         প্রতিটি সম্পন্ন পরীক্ষার ফলাফল এই ডিভাইসে সংরক্ষিত থাকে
+         (mrpe_history)। Supabase চালু হলে এই রেকর্ডগুলোই অনলাইনে যাবে। */
+      var HISTORY_KEY = "mrpe_history";
+      function loadHistory() {
+        try {
+          var v = JSON.parse(localStorage.getItem(HISTORY_KEY) || "[]");
+          return (v && v.length !== undefined) ? v : [];
+        } catch (e) { return []; }
+      }
+      function saveAttempt(rec) {
+        try {
+          var list = loadHistory();
+          list.push(rec);
+          localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
+        } catch (e) {}
+      }
+
+      var BN_MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
+      function fmtDateBn(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return "";
+        return toBn(d.getDate()) + " " + BN_MONTHS[d.getMonth()] + " " + toBn(d.getFullYear());
+      }
+      function fmtClockBn(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return "";
+        var h = d.getHours(), m = d.getMinutes();
+        var part = h < 5 ? "রাত" : (h < 12 ? "সকাল" : (h < 16 ? "দুপুর" : (h < 19 ? "বিকেল" : (h < 21 ? "সন্ধ্যা" : "রাত"))));
+        var h12 = h % 12; if (h12 === 0) h12 = 12;
+        return part + " " + toBn(h12) + ":" + toBn(m < 10 ? "0" + m : m);
+      }
+
+      var SVGNS = "http://www.w3.org/2000/svg";
+      function svgNode(tag, attrs) {
+        var n = document.createElementNS(SVGNS, tag);
+        for (var k in attrs) n.setAttribute(k, attrs[k]);
+        return n;
+      }
+
+      /* সময়ের ধারায় প্রতিটি পরীক্ষার % — উল্লম্ব বার চার্ট */
+      function renderTimeChart(box, chrono) {
+        box.innerHTML = "";
+        var W = 340, H = 196, base = 158, top = 26;
+        var svg = svgNode("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "সময়ের সাথে প্রতিটি পরীক্ষার শতকরা নম্বরের বার চার্ট" });
+        svg.appendChild(svgNode("line", { x1: 6, y1: base, x2: W - 6, y2: base, stroke: "var(--line)", "stroke-width": 1.5 }));
+        var n = chrono.length;
+        var slot = (W - 12) / n;
+        var bw = Math.min(40, slot * 0.62);
+        chrono.forEach(function (a, i) {
+          var h = Math.max(3, (base - top) * a.pct / 100);
+          var x = 6 + slot * i + (slot - bw) / 2;
+          svg.appendChild(svgNode("rect", { x: x, y: base - h, width: bw, height: h, rx: 4, fill: "var(--accent)" }));
+          var val = svgNode("text", { x: x + bw / 2, y: base - h - 6, "text-anchor": "middle", "font-size": 11.5, "font-weight": 800, fill: "var(--ink)" });
+          val.textContent = toBn(a.pct) + "%";
+          svg.appendChild(val);
+          var d = new Date(a.date);
+          var dl = svgNode("text", { x: x + bw / 2, y: base + 17, "text-anchor": "middle", "font-size": 10.5, fill: "var(--ink-faint)" });
+          dl.textContent = isNaN(d.getTime()) ? "" : toBn(d.getDate()) + "/" + toBn(d.getMonth() + 1);
+          svg.appendChild(dl);
+          var ex = svgNode("text", { x: x + bw / 2, y: base + 32, "text-anchor": "middle", "font-size": 9.5, fill: "var(--ink-faint)" });
+          ex.textContent = a.exam || "";
+          svg.appendChild(ex);
+        });
+        box.appendChild(svg);
+      }
+
+      /* বিষয়ভিত্তিক গড় % — অনুভূমিক বার চার্ট */
+      function renderSubjectChart(box, rows) {
+        box.innerHTML = "";
+        var W = 340, rowH = 42, H = rows.length * rowH + 6;
+        var svg = svgNode("svg", { viewBox: "0 0 " + W + " " + H, role: "img", "aria-label": "বিষয়ভিত্তিক গড় শতকরা নম্বরের চার্ট" });
+        rows.forEach(function (r, i) {
+          var y = i * rowH + 4;
+          var label = svgNode("text", { x: 0, y: y + 13, "font-size": 12.5, "font-weight": 700, fill: "var(--ink)" });
+          label.textContent = r.subject + " · " + toBn(r.count) + "টি পরীক্ষা";
+          svg.appendChild(label);
+          svg.appendChild(svgNode("rect", { x: 0, y: y + 20, width: W - 54, height: 12, rx: 6, fill: "var(--surface)" }));
+          svg.appendChild(svgNode("rect", { x: 0, y: y + 20, width: Math.max(6, (W - 54) * r.avg / 100), height: 12, rx: 6, fill: "var(--accent)" }));
+          var val = svgNode("text", { x: W - 48, y: y + 31, "font-size": 12.5, "font-weight": 800, fill: "var(--accent)" });
+          val.textContent = toBn(r.avg) + "%";
+          svg.appendChild(val);
+        });
+        box.appendChild(svg);
+      }
+
+      function openHistory(name) {
+        historyName = name;
+        renderHistory();
+        showScreen("screen-history");
+      }
+
+      function renderHistory() {
+        var key = historyName.replace(/^\s+|\s+$/g, "").toLowerCase();
+        var all = loadHistory();
+        var mine = [];
+        for (var i = 0; i < all.length; i++) {
+          if (String(all[i].name || "").replace(/^\s+|\s+$/g, "").toLowerCase() === key) mine.push(all[i]);
+        }
+        el("histName").textContent = historyName;
+        var has = mine.length > 0;
+        el("histEmpty").classList.toggle("hidden", has);
+        el("histBody").classList.toggle("hidden", !has);
+        if (!has) return;
+
+        var sum = 0, best = 0;
+        mine.forEach(function (a) { sum += a.pct; if (a.pct > best) best = a.pct; });
+        el("histCount").textContent = toBn(mine.length);
+        el("histAvg").textContent = toBn(Math.round(sum / mine.length)) + "%";
+        el("histBest").textContent = toBn(best) + "%";
+
+        var chrono = mine.slice().sort(function (a, b) { return new Date(a.date) - new Date(b.date); });
+        renderTimeChart(el("histChartTime"), chrono);
+
+        var bySub = {};
+        mine.forEach(function (a) {
+          var s = a.subject || "—";
+          if (!bySub[s]) bySub[s] = { subject: s, sum: 0, count: 0, best: 0 };
+          bySub[s].sum += a.pct; bySub[s].count++;
+          if (a.pct > bySub[s].best) bySub[s].best = a.pct;
+        });
+        var rows = [];
+        for (var k in bySub) rows.push({ subject: k, avg: Math.round(bySub[k].sum / bySub[k].count), count: bySub[k].count, best: bySub[k].best });
+        rows.sort(function (a, b) { return b.avg - a.avg; });
+        renderSubjectChart(el("histChartSubject"), rows);
+
+        var sbox = el("histSubjects");
+        sbox.innerHTML = "";
+        rows.forEach(function (r) {
+          var row = document.createElement("div");
+          row.className = "saved-row";
+          var info = document.createElement("div");
+          info.className = "saved-info";
+          var b = document.createElement("b"); b.textContent = r.subject;
+          var s = document.createElement("span");
+          s.textContent = toBn(r.count) + "টি পরীক্ষা · গড় " + toBn(r.avg) + "% · সর্বোচ্চ " + toBn(r.best) + "%";
+          info.appendChild(b); info.appendChild(s);
+          var badge = document.createElement("span");
+          badge.className = "pct-badge"; badge.textContent = toBn(r.avg) + "%";
+          row.appendChild(info); row.appendChild(badge);
+          sbox.appendChild(row);
+        });
+
+        var list = el("histList");
+        list.innerHTML = "";
+        var desc = mine.slice().sort(function (a, b) { return new Date(b.date) - new Date(a.date); });
+        desc.forEach(function (a) {
+          var row = document.createElement("div");
+          row.className = "saved-row";
+          var info = document.createElement("div");
+          info.className = "saved-info";
+          var b = document.createElement("b");
+          b.textContent = (a.subject || "—") + " · " + (a.exam || "");
+          var s = document.createElement("span");
+          s.textContent = fmtDateBn(a.date) + ", " + fmtClockBn(a.date) + " · সঠিক " + toBn(a.correct) + " / " + toBn(a.total);
+          info.appendChild(b); info.appendChild(s);
+          var badge = document.createElement("span");
+          badge.className = "pct-badge"; badge.textContent = toBn(a.pct) + "%";
+          row.appendChild(info); row.appendChild(badge);
+          list.appendChild(row);
+        });
+      }
+
+      /* ================= ADMIN ================= */
+      var PW_KEY = "mrpe_admin_pw";
+      /* No default password exists anywhere in this page: on first use the admin
+         creates his own password on this device; only its hash is stored. */
+      function fallbackHash(str) {
+        var h1 = 5381, h2 = 52711;
+        for (var i = 0; i < str.length; i++) {
+          var c = str.charCodeAt(i);
+          h1 = (h1 * 33) ^ c;
+          h2 = (h2 * 31) ^ c;
+        }
+        return "fb:" + (h1 >>> 0).toString(16) + "." + (h2 >>> 0).toString(16);
+      }
+      function hashPw(str) {
+        if (window.crypto && crypto.subtle && window.TextEncoder) {
+          return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)).then(function (buf) {
+            var arr = new Uint8Array(buf), hex = "";
+            for (var i = 0; i < arr.length; i++) hex += ("0" + arr[i].toString(16)).slice(-2);
+            return "s256:" + hex;
+          }).catch(function () { return fallbackHash(str); });
+        }
+        return Promise.resolve(fallbackHash(str));
+      }
+      function storedPwHash() {
+        try { return localStorage.getItem(PW_KEY); } catch (e) { return null; }
+      }
+      /* Login accepts a match against either hash form, so a password created in a
+         browser/webview with a different crypto capability still verifies later. */
+      function hashPwBoth(str) {
+        var list = [fallbackHash(str)];
+        if (window.crypto && crypto.subtle && window.TextEncoder) {
+          return crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)).then(function (buf) {
+            var arr = new Uint8Array(buf), hex = "";
+            for (var i = 0; i < arr.length; i++) hex += ("0" + arr[i].toString(16)).slice(-2);
+            list.push("s256:" + hex);
+            return list;
+          }).catch(function () { return list; });
+        }
+        return Promise.resolve(list);
+      }
+      var adminQuestions = [];
+
+      function showScreen(id) {
+        var ids = ["screen-start", "screen-exam", "screen-result", "screen-history", "screen-admin-login", "screen-admin"];
+        for (var i = 0; i < ids.length; i++) el(ids[i]).classList.toggle("hidden", ids[i] !== id);
+        window.scrollTo({ top: 0 });
+      }
+
+      function refreshAdminLoginUI() {
+        var setup = !storedPwHash();
+        el("adminLoginNote").textContent = setup
+          ? "প্রথমবার: নিজের পছন্দের একটি পাসওয়ার্ড তৈরি করো — এটি শুধু এই ব্রাউজারেই থাকবে"
+          : "শুধুমাত্র শিক্ষকের জন্য";
+        el("btnAdminLogin").textContent = setup ? "পাসওয়ার্ড তৈরি করে প্রবেশ করো" : "প্রবেশ করো";
+        el("adminPwInput").placeholder = setup ? "নতুন পাসওয়ার্ড তৈরি করো (কমপক্ষে ৪ অক্ষর)" : "পাসওয়ার্ড লেখো";
+      }
+      el("btnAdminOpen").addEventListener("click", function () {
+        el("adminPwInput").value = "";
+        el("adminPwErr").style.display = "none";
+        refreshAdminLoginUI();
+        showScreen("screen-admin-login");
+      });
+      el("btnAdminBack").addEventListener("click", function () { showScreen("screen-start"); });
+      el("btnAdminHome").addEventListener("click", function () { showScreen("screen-start"); });
+      el("btnAdminLogout").addEventListener("click", function () { showScreen("screen-start"); });
+
+      function tryAdminLogin() {
+        var entered = el("adminPwInput").value;
+        var stored = storedPwHash();
+        if (!stored) {
+          /* First use on this device: the admin creates his own password. */
+          if (entered.length < 4) {
+            el("adminPwErr").textContent = "কমপক্ষে ৪ অক্ষরের পাসওয়ার্ড তৈরি করো।";
+            el("adminPwErr").style.display = "block";
+            return;
+          }
+          hashPw(entered).then(function (h) {
+            try { localStorage.setItem(PW_KEY, h); } catch (e) {}
+            el("adminPwErr").style.display = "none";
+            showScreen("screen-admin");
+            renderSavedList();
+          });
+          return;
+        }
+        hashPwBoth(entered).then(function (hs) {
+          var ok = false;
+          for (var i = 0; i < hs.length; i++) if (hs[i] === stored) ok = true;
+          if (ok) {
+            el("adminPwErr").style.display = "none";
+            showScreen("screen-admin");
+            renderSavedList();
+          } else {
+            el("adminPwErr").textContent = "পাসওয়ার্ড সঠিক নয় — আবার চেষ্টা করো।";
+            el("adminPwErr").style.display = "block";
+          }
+        });
+      }
+      el("btnAdminLogin").addEventListener("click", tryAdminLogin);
+      el("adminPwInput").addEventListener("keydown", function (ev) { if (ev.key === "Enter") tryAdminLogin(); });
+
+      el("btnChangePw").addEventListener("click", function () {
+        var v = el("adNewPw").value;
+        if (v.length < 4) { el("adPwStatus").textContent = "কমপক্ষে ৪ অক্ষরের পাসওয়ার্ড দাও।"; return; }
+        hashPw(v).then(function (h) {
+          try { localStorage.setItem(PW_KEY, h); } catch (e) {}
+          el("adNewPw").value = "";
+          el("adPwStatus").textContent = "পাসওয়ার্ড বদলানো হয়েছে — এই ব্রাউজারে সংরক্ষিত।";
+        });
+      });
+
+      function fillAdminSubjects() {
+        var gname = el("adGroup").value;
+        var sel = el("adSubject");
+        sel.innerHTML = "";
+        var gi = -1;
+        GROUPS.forEach(function (g, i) { if (g.name === gname) gi = i; });
+        var ph = document.createElement("option");
+        ph.value = "";
+        ph.textContent = gi < 0 ? "আগে গ্রুপ বেছে নাও" : "বিষয় বেছে নাও";
+        sel.appendChild(ph);
+        if (gi >= 0) {
+          subjectsForGroup(gi).forEach(function (s) {
+            var o = document.createElement("option");
+            o.value = s; o.textContent = s;
+            sel.appendChild(o);
+          });
+        }
+      }
+      el("adGroup").addEventListener("change", fillAdminSubjects);
+
+      /* ---------- OCR ---------- */
+      function ocrImage(file, statusEl, done) {
+        if (typeof Tesseract === "undefined") {
+          statusEl.textContent = "OCR লোড হয়নি — ইন্টারনেট সংযোগ চেক করে পেজটি আবার খুলে চেষ্টা করো।";
+          done(null);
+          return;
+        }
+        Tesseract.recognize(file, "ben+eng", {
+          logger: function (m) {
+            if (m.status === "recognizing text") {
+              statusEl.textContent = "ছবি পড়া হচ্ছে… " + toBn(Math.round(m.progress * 100)) + "%";
+            }
+          }
+        }).then(function (res) {
+          done((res && res.data && res.data.text) || "");
+        }).catch(function () {
+          statusEl.textContent = "ছবিটি পড়া যায়নি — আরেকটি পরিষ্কার ছবি দিয়ে চেষ্টা করো।";
+          done(null);
+        });
+      }
+
+      el("adQFiles").addEventListener("change", function () {
+        var files = [];
+        for (var k = 0; k < this.files.length; k++) files.push(this.files[k]);
+        this.value = "";
+        if (!files.length) return;
+        var status = el("adOcrStatus");
+        var i = 0;
+        function next() {
+          if (i >= files.length) {
+            status.textContent = "সব ছবির OCR শেষ — নিচে প্রশ্নগুলো মিলিয়ে নাও।";
+            parseAdminText();
+            return;
+          }
+          status.textContent = "ছবি " + toBn(i + 1) + " / " + toBn(files.length) + " পড়া হচ্ছে…";
+          ocrImage(files[i], status, function (text) {
+            if (text) {
+              var ta = el("adRawText");
+              ta.value = (ta.value.replace(/\s+$/, "") ? ta.value.replace(/\s+$/, "") + "\n\n" : "") + text;
+            }
+            i++;
+            next();
+          });
+        }
+        next();
+      });
+
+      el("adKeyFile").addEventListener("change", function () {
+        var f = this.files && this.files[0];
+        this.value = "";
+        if (!f) return;
+        var status = el("adKeyStatus");
+        if (!adminQuestions.length) {
+          status.textContent = "আগে প্রশ্নের ছবি থেকে প্রশ্ন তৈরি করো, তারপর উত্তরপত্র আপলোড করো।";
+          return;
+        }
+        status.textContent = "উত্তরপত্র পড়া হচ্ছে…";
+        ocrImage(f, status, function (text) {
+          if (text === null) return;
+          var map = parseAnswerKey(text);
+          var applied = 0;
+          adminQuestions.forEach(function (q, i) {
+            if (map[i + 1] !== undefined && map[i + 1] !== null) { q.a = map[i + 1]; applied++; }
+          });
+          renderAdminQuestions();
+          status.textContent = applied
+            ? toBn(applied) + "টি প্রশ্নের উত্তর উত্তরপত্র থেকে বসানো হয়েছে — প্রতিটি উত্তরে ট্যাপ করে নিশ্চিত করো।"
+            : "উত্তরপত্র থেকে কোনো উত্তর পড়া যায়নি — প্রতিটি প্রশ্নে নিজে ট্যাপ করে সঠিক উত্তর বসাও।";
+        });
+      });
+
+      /* ---------- OCR text → questions ---------- */
+      var BN_DIGITS = { "০": 0, "১": 1, "২": 2, "৩": 3, "৪": 4, "৫": 5, "৬": 6, "৭": 7, "৮": 8, "৯": 9 };
+      function bnNum(s) {
+        return parseInt(String(s).replace(/[০-৯]/g, function (c) { return BN_DIGITS[c]; }), 10);
+      }
+
+      function splitOptions(block) {
+        var re = /\(?\s*([কখগঘ])\s*[\)\.।:\u20dd]\s*/g;
+        var found = [], m, want = 0;
+        while ((m = re.exec(block)) !== null) {
+          var li = LETTERS.indexOf(m[1]);
+          if (li === want) {
+            found.push({ i: li, start: m.index, end: re.lastIndex });
+            want++;
+            if (want === 4) break;
+          }
+        }
+        var q = { q: "", o: ["", "", "", ""], a: null, e: "" };
+        function flat(t) { return t.replace(/\s*\n\s*/g, " ").replace(/\s+/g, " ").replace(/^\s+|\s+$/g, ""); }
+        if (!found.length) { q.q = flat(block); return q; }
+        q.q = flat(block.slice(0, found[0].start));
+        for (var k = 0; k < found.length; k++) {
+          var e2 = (k + 1 < found.length) ? found[k + 1].start : block.length;
+          q.o[found[k].i] = flat(block.slice(found[k].end, e2));
+        }
+        return q;
+      }
+
+      function parseQuestions(text) {
+        var out = [];
+        if (!text) return out;
+        var re = /(?:^|\n)\s*([০-৯0-9]{1,2})\s*[.\)।]\s*/g;
+        var marks = [], m, expected = 1;
+        while ((m = re.exec(text)) !== null) {
+          var n = bnNum(m[1]);
+          if (n === expected) {
+            marks.push({ start: m.index, bodyStart: re.lastIndex });
+            expected++;
+          }
+        }
+        var blocks = [];
+        if (!marks.length) {
+          blocks = [text];
+        } else {
+          for (var i = 0; i < marks.length; i++) {
+            var end = (i + 1 < marks.length) ? marks[i + 1].start : text.length;
+            blocks.push(text.slice(marks[i].bodyStart, end));
+          }
+        }
+        for (var j = 0; j < blocks.length; j++) out.push(splitOptions(blocks[j]));
+        return out;
+      }
+
+      function parseAnswerKey(text) {
+        var map = {};
+        if (!text) return map;
+        var re = /([০-৯0-9]{1,2})\s*[\.\)।:\-]?\s*\(?\s*([কখগঘ])\s*\)?/g;
+        var m;
+        while ((m = re.exec(text)) !== null) {
+          var n = bnNum(m[1]);
+          if (n >= 1 && n <= 200) map[n] = LETTERS.indexOf(m[2]);
+        }
+        return map;
+      }
+
+      function parseAdminText() {
+        adminQuestions = parseQuestions(el("adRawText").value);
+        renderAdminQuestions();
+        el("adOcrStatus").textContent = adminQuestions.length
+          ? toBn(adminQuestions.length) + "টি প্রশ্ন তৈরি হয়েছে — প্রতিটি মিলিয়ে নাও ও সঠিক উত্তরের অক্ষরে ট্যাপ করো।"
+          : "কোনো প্রশ্ন পাওয়া যায়নি — লেখা ঠিক করে আবার চেষ্টা করো।";
+      }
+      el("btnParse").addEventListener("click", parseAdminText);
+      el("btnAddQ").addEventListener("click", function () {
+        adminQuestions.push({ q: "", o: ["", "", "", ""], a: null, e: "" });
+        renderAdminQuestions();
+      });
+
+      function renderAdminQuestions() {
+        var box = el("adQList");
+        box.innerHTML = "";
+        adminQuestions.forEach(function (q, qi) {
+          var card = document.createElement("div");
+          card.className = "qedit";
+          var head = document.createElement("div");
+          head.className = "qedit-head";
+          var t = document.createElement("b");
+          t.textContent = "প্রশ্ন " + toBn(qi + 1);
+          var del = document.createElement("button");
+          del.type = "button"; del.className = "btn btn-small"; del.textContent = "মুছুন";
+          del.addEventListener("click", function () {
+            adminQuestions.splice(qi, 1);
+            renderAdminQuestions();
+          });
+          head.appendChild(t); head.appendChild(del);
+          card.appendChild(head);
+          var hint = document.createElement("p");
+          hint.className = "qedit-hint";
+          hint.textContent = q.a === null ? "সঠিক উত্তরের অক্ষরে (ক / খ / গ / ঘ) ট্যাপ করো" : "সঠিক উত্তর: " + LETTERS[q.a];
+          var ta = document.createElement("textarea");
+          ta.className = "qedit-q"; ta.rows = 3; ta.value = q.q;
+          ta.placeholder = "প্রশ্নের লেখা";
+          ta.addEventListener("input", function () { q.q = ta.value; });
+          card.appendChild(ta);
+          q.o.forEach(function (ov, oi) {
+            var row = document.createElement("div");
+            row.className = "opt-edit";
+            var kb = document.createElement("button");
+            kb.type = "button";
+            kb.className = "key-btn" + (q.a === oi ? " on" : "");
+            kb.textContent = LETTERS[oi];
+            kb.setAttribute("aria-label", "সঠিক উত্তর হিসেবে " + LETTERS[oi] + " বেছে নাও");
+            kb.addEventListener("click", function () {
+              q.a = oi;
+              var btns = card.querySelectorAll(".key-btn");
+              for (var x = 0; x < btns.length; x++) btns[x].classList.toggle("on", x === oi);
+              hint.textContent = "সঠিক উত্তর: " + LETTERS[oi];
+            });
+            var inp = document.createElement("input");
+            inp.type = "text"; inp.className = "qedit-o"; inp.value = ov;
+            inp.placeholder = "বিকল্প " + LETTERS[oi];
+            inp.addEventListener("input", function () { q.o[oi] = inp.value; });
+            row.appendChild(kb); row.appendChild(inp);
+            card.appendChild(row);
+          });
+          card.appendChild(hint);
+          box.appendChild(card);
+        });
+        el("adQCount").textContent = adminQuestions.length ? "মোট " + toBn(adminQuestions.length) + "টি প্রশ্ন" : "";
+      }
+
+      /* ---------- Save / export / delete ---------- */
+      el("btnSaveExam").addEventListener("click", function () {
+        var status = el("adSaveStatus");
+        var name = el("adExamName").value.replace(/^\s+|\s+$/g, "");
+        var subject = el("adSubject").value;
+        if (!name) { status.textContent = "আগে পরীক্ষার নাম লেখো।"; return; }
+        if (!subject) { status.textContent = "আগে গ্রুপ ও বিষয় বেছে নাও।"; return; }
+        if (!adminQuestions.length) { status.textContent = "আগে প্রশ্ন যোগ করো।"; return; }
+        var missing = [];
+        var qs = [];
+        adminQuestions.forEach(function (q, i) {
+          if (!q.q.replace(/\s+/g, "") || q.a === null) missing.push(i + 1);
+          qs.push({ q: q.q, o: q.o.slice(), a: q.a, e: "" });
+        });
+        if (missing.length) {
+          status.textContent = "এই প্রশ্নগুলোতে প্রশ্নের লেখা বা সঠিক উত্তর বাকি আছে: " + missing.map(toBn).join(", ");
+          return;
+        }
+        var mins = parseInt(el("adMinutes").value, 10);
+        if (!(mins > 0)) mins = 30;
+        var list = loadCustomExams();
+        list.push({
+          id: "c" + Date.now(),
+          school: el("adSchool").value.replace(/^\s+|\s+$/g, ""),
+          group: el("adGroup").value,
+          subject: subject,
+          chapter: el("adChapter").value.replace(/^\s+|\s+$/g, ""),
+          name: name,
+          minutes: mins,
+          questions: qs
+        });
+        saveCustomExams(list);
+        status.textContent = "সংরক্ষণ হয়েছে! হোম স্ক্রিনে গিয়ে বিষয়টি বেছে এই পরীক্ষাটি দিয়ে দেখতে পারো।";
+        renderSavedList();
+        if (selectedSubject === subject) {
+          activeExams = examsForSubject(subject);
+          renderExams();
+          renderSubjects();
+        }
+      });
+
+      function exportExam(ex) {
+        var blob = new Blob([JSON.stringify(ex, null, 2)], { type: "application/json" });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = (ex.name || "exam").replace(/\s+/g, "-") + ".json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      }
+
+      function renderSavedList() {
+        var box = el("adSavedList");
+        box.innerHTML = "";
+        var list = loadCustomExams();
+        if (!list.length) {
+          var p = document.createElement("p");
+          p.className = "empty-note";
+          p.textContent = "এই ডিভাইসে এখনো কোনো পরীক্ষা সংরক্ষণ করা হয়নি।";
+          box.appendChild(p);
+          return;
+        }
+        list.forEach(function (ex) {
+          var row = document.createElement("div");
+          row.className = "saved-row";
+          var info = document.createElement("div");
+          info.className = "saved-info";
+          var b = document.createElement("b");
+          b.textContent = ex.name;
+          var s = document.createElement("span");
+          s.textContent = ex.subject + (ex.chapter ? " · " + ex.chapter : "") + " · " + toBn(ex.questions.length) + "টি প্রশ্ন · এই ডিভাইসে সংরক্ষিত";
+          info.appendChild(b); info.appendChild(s);
+          var eb = document.createElement("button");
+          eb.type = "button"; eb.className = "btn btn-small"; eb.textContent = "Export";
+          eb.addEventListener("click", function () { exportExam(ex); });
+          var db = document.createElement("button");
+          db.type = "button"; db.className = "btn btn-small btn-danger"; db.textContent = "মুছুন";
+          db.addEventListener("click", function () {
+            var all = loadCustomExams();
+            var kept = [];
+            for (var i = 0; i < all.length; i++) if (all[i].id !== ex.id) kept.push(all[i]);
+            saveCustomExams(kept);
+            renderSavedList();
+            if (selectedSubject) {
+              activeExams = examsForSubject(selectedSubject);
+              if (selectedExam >= activeExams.length) selectedExam = 0;
+              renderExams();
+              renderSubjects();
+            }
+          });
+          row.appendChild(info); row.appendChild(eb); row.appendChild(db);
+          box.appendChild(row);
+        });
+      }
+
+      el("btnStart").addEventListener("click", startExam);
+      el("studentName").addEventListener("keydown", function (ev) { if (ev.key === "Enter") startExam(); });
+      el("studentName").addEventListener("input", function () {
+        el("btnHistoryOpen").disabled = !this.value.replace(/^\s+|\s+$/g, "");
+        if (this.value.replace(/^\s+|\s+$/g, "")) el("nameErr").style.display = "none";
+      });
+      el("btnHistoryOpen").addEventListener("click", function () {
+        var name = el("studentName").value.replace(/^\s+|\s+$/g, "");
+        if (!name) {
+          el("nameErr").style.display = "block";
+          el("studentName").focus();
+          return;
+        }
+        openHistory(name);
+      });
+      el("btnResultHistory").addEventListener("click", function () { openHistory(studentName); });
+      el("btnHistoryBack").addEventListener("click", function () { showScreen("screen-start"); });
+      el("btnExamBack").addEventListener("click", function () {
+        overlayAction = "back";
+        el("modalTitle").textContent = "হোমে ফিরে যাবে?";
+        el("modalText").textContent = "এই পরীক্ষাটি শেষ না করেই বের হয়ে যাচ্ছ — দেওয়া উত্তরগুলো সংরক্ষিত হবে না।";
+        el("overlay").classList.add("open");
+      });
+      el("btnPrev").addEventListener("click", function () { if (current > 0) { current--; renderQuestion(); } });
+      el("btnNext").addEventListener("click", function () { if (current < TOTAL - 1) { current++; renderQuestion(); } });
+      el("btnSubmit").addEventListener("click", requestSubmit);
+      el("btnCancelSubmit").addEventListener("click", function () { el("overlay").classList.remove("open"); });
+      el("btnConfirmSubmit").addEventListener("click", function () {
+        if (overlayAction === "back") {
+          overlayAction = "submit";
+          el("overlay").classList.remove("open");
+          if (timerId) { clearInterval(timerId); timerId = null; }
+          showScreen("screen-start");
+        } else {
+          finishExam(false);
+        }
+      });
+      el("overlay").addEventListener("click", function (ev) { if (ev.target === el("overlay")) el("overlay").classList.remove("open"); });
+      el("btnRetake").addEventListener("click", function () {
+        el("screen-result").classList.add("hidden");
+        el("screen-start").classList.remove("hidden");
+        window.scrollTo({ top: 0 });
+      });
+    </script>
+  </body>
+</html>
