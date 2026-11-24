@@ -392,6 +392,13 @@
         background: var(--accent-soft); border-radius: 999px; padding: 4px 12px;
       }
       .device-note { font-size: 13.5px; color: var(--ink-faint); margin: 14px 0 0; }
+      .sync-note {
+        font-size: 14px; font-weight: 600; border-radius: 10px;
+        padding: 9px 13px; margin: 12px 0 0; text-align: center;
+      }
+      .sync-note.ok { background: var(--accent-soft); color: var(--accent); }
+      .sync-note.wait { background: var(--surface-2); color: var(--ink-soft); }
+      .sync-note.fail { background: var(--warn-soft); color: var(--warn); }
 
       /* ---------- Modal ---------- */
       .overlay {
@@ -524,6 +531,7 @@
             <div class="stat-box stat-none"><b id="resNone"></b><span>উত্তর হয়নি</span></div>
           </div>
           <p class="time-note" id="resTime"></p>
+          <p class="sync-note wait" id="resSync">ফলাফল সংরক্ষণ করা হচ্ছে…</p>
         </div>
 
         <h2 class="review-title">উত্তর পর্যালোচনা</h2>
@@ -539,6 +547,7 @@
           <button class="btn btn-small" id="btnHistoryBack" type="button">← ফিরে যাও</button>
           <h2>আগের পরীক্ষা</h2>
           <p class="hist-who">পরীক্ষার্থী: <b id="histName"></b></p>
+          <p class="sync-note wait" id="histSync">অনলাইন থেকে ইতিহাস আনা হচ্ছে…</p>
           <div id="histEmpty" class="notice-box hidden">এই নামে এখনো কোনো পরীক্ষা দেওয়া হয়নি — প্রথম পরীক্ষাটি দিলেই এখানে আগের ফলাফলের সারসংক্ষেপ ও চার্ট দেখা যাবে।</div>
           <div id="histBody">
             <div class="stat-row">
@@ -554,7 +563,7 @@
             <div id="histSubjects"></div>
             <h3>সব পরীক্ষার তালিকা</h3>
             <div id="histList"></div>
-            <p class="device-note">এই ইতিহাস এই ডিভাইসে দেওয়া পরীক্ষাগুলোর ভিত্তিতে তৈরি।</p>
+            <p class="device-note" id="histSourceNote">এই ইতিহাস অনলাইনে সংরক্ষিত ফলাফল থেকে তৈরি — যেকোনো ডিভাইস থেকে একই নামে দেখা যাবে।</p>
           </div>
         </div>
       </section>
@@ -645,6 +654,31 @@
           <div class="notice-box">এই পরীক্ষাটি শুধু এই ডিভাইসে সংরক্ষিত হয়েছে — ছাত্রদের লিংকে দেখাতে হলে Export করে ফাইলটি Muse-কে পাঠাতে হবে।</div>
           <div id="adSavedList" style="margin-top:12px;"></div>
 
+          <h3>Supabase সংযোগ (অনলাইন ফলাফল)</h3>
+          <p class="status-line" id="sbStatus">সংযোগ: https://afpxrnyrztgmqeeykhww.supabase.co — টেবিল: exam_results</p>
+          <div class="notice-box">ফলাফল অনলাইনে যেতে হলে একবার Supabase Dashboard → <b>SQL Editor</b>-এ নিচের SQL টি Run করতে হবে। এরপর থেকে প্রতিটি পরীক্ষার ফলাফল সার্ভারে জমা হবে এবং ছাত্ররা যেকোনো ডিভাইস থেকে নাম দিয়ে আগের পরীক্ষা দেখতে পারবে।</div>
+          <div class="field" style="margin-top:14px;">
+            <label for="sbSql">টেবিল তৈরির SQL (একবার Run করলেই হবে)</label>
+            <textarea id="sbSql" readonly>create table if not exists public.exam_results (
+  id uuid primary key default gen_random_uuid(),
+  student_name text not null,
+  group_name text,
+  subject text,
+  exam text,
+  correct int not null,
+  total int not null,
+  pct numeric not null,
+  seconds int,
+  created_at timestamptz not null default now()
+);
+alter table public.exam_results enable row level security;
+create policy "Anyone can insert exam results" on public.exam_results for insert to anon with check (true);
+create policy "Anyone can read exam results" on public.exam_results for select to anon using (true);</textarea>
+          </div>
+          <button class="btn btn-block" id="btnCopySql" type="button">SQL কপি করো</button>
+          <button class="btn btn-block" id="btnCheckSb" type="button">সংযোগ পরীক্ষা করো</button>
+          <p class="status-line" id="sbCheckStatus"></p>
+
           <h3>পাসওয়ার্ড বদলান</h3>
           <div class="field">
             <label for="adNewPw">নতুন পাসওয়ার্ড</label>
@@ -671,13 +705,30 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.5/dist/tesseract.min.js"></script>
     <script>
       /* ============================================================
-         Supabase সংযোগ — ভবিষ্যতের জন্য প্রস্তুত, এখন নিষ্ক্রিয়।
-         শিক্ষক Supabase project তৈরি করে নিচের url ও anonKey বসালে
-         ছাত্রদের ফলাফল অনলাইনে সংরক্ষণের ব্যবস্থা পরে চালু করা যাবে।
-         যতক্ষণ দুটো ঘরই ফাঁকা, এই পেজ কোনো নেটওয়ার্ক কল করে না —
-         পরীক্ষার ফলাফল শুধু এই ডিভাইসেই সংরক্ষিত থাকে।
+         Supabase সংযোগ — চালু আছে।
+         Project: afpxrnyrztgmqeeykhww (anon / publishable key — public,
+         ওয়েবসাইটের কোডেই থাকে; service_role key এখানে কখনো নয়)।
+         Table: public.exam_results (supabase-setup.sql দিয়ে তৈরি)।
+         প্রতিটি পরীক্ষার ফলাফল অনলাইনে সংরক্ষিত হয়, আর আগের পরীক্ষা
+         পেজে যেকোনো ডিভাইস থেকে নাম দিয়ে নিজের ইতিহাস দেখা যায়।
+         নেটওয়ার্ক বা টেবিল না থাকলে ফলাফল এই ডিভাইসেই থেকে যায়।
          ============================================================ */
-      var SUPABASE_CONFIG = { url: "", anonKey: "" };
+      var SUPABASE_CONFIG = {
+        url: "https://afpxrnyrztgmqeeykhww.supabase.co",
+        anonKey: "sb_publishable_9IQszTs8if4uEJWYa2HJcw_JnbQ4eMn"
+      };
+      function supabaseEnabled() {
+        return !!(SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey);
+      }
+      function supabaseHeaders(extra) {
+        var h = {
+          "apikey": SUPABASE_CONFIG.anonKey,
+          "Authorization": "Bearer " + SUPABASE_CONFIG.anonKey,
+          "Content-Type": "application/json"
+        };
+        if (extra) for (var k in extra) h[k] = extra[k];
+        return h;
+      }
 
       var BN = ["০","১","২","৩","৪","৫","৬","৭","৮","৯"];
       function toBn(n) { return String(n).replace(/[0-9]/g, function (d) { return BN[+d]; }); }
@@ -1064,6 +1115,16 @@
           total: TOTAL,
           pct: pct,
           seconds: used
+        }, function (online) {
+          var s = el("resSync");
+          if (!s) return;
+          if (online) {
+            s.className = "sync-note ok";
+            s.textContent = "✓ ফলাফল অনলাইনে সংরক্ষিত হয়েছে — যেকোনো ডিভাইস থেকে নাম দিয়ে আগের পরীক্ষায় দেখা যাবে।";
+          } else {
+            s.className = "sync-note fail";
+            s.textContent = "ফলাফল এই ডিভাইসে সংরক্ষিত হয়েছে — অনলাইনে পাঠানো যায়নি (ইন্টারনেট বা সার্ভার সমস্যা হতে পারে)।";
+          }
         });
         el("resName").textContent = studentName;
         el("resExamLine").textContent = currentExam.label + " — " + currentExam.sub;
@@ -1314,8 +1375,9 @@
       renderGroups();
 
       /* ================= ATTEMPT HISTORY (আগের পরীক্ষা) =================
-         প্রতিটি সম্পন্ন পরীক্ষার ফলাফল এই ডিভাইসে সংরক্ষিত থাকে
-         (mrpe_history)। Supabase চালু হলে এই রেকর্ডগুলোই অনলাইনে যাবে। */
+         প্রতিটি সম্পন্ন পরীক্ষার ফলাফল Supabase-এ (exam_results)
+         অনলাইনে সংরক্ষিত হয়, সঙ্গে এই ডিভাইসেও থাকে (mrpe_history)
+         যাতে অফলাইনে বা সার্ভার ব্যর্থ হলেও ইতিহাস হারায় না। */
       var HISTORY_KEY = "mrpe_history";
       function loadHistory() {
         try {
@@ -1323,12 +1385,68 @@
           return (v && v.length !== undefined) ? v : [];
         } catch (e) { return []; }
       }
-      function saveAttempt(rec) {
+      function saveAttempt(rec, onDone) {
         try {
           var list = loadHistory();
           list.push(rec);
           localStorage.setItem(HISTORY_KEY, JSON.stringify(list));
         } catch (e) {}
+        if (!supabaseEnabled()) { if (onDone) onDone(false); return; }
+        try {
+          fetch(SUPABASE_CONFIG.url + "/rest/v1/exam_results", {
+            method: "POST",
+            headers: supabaseHeaders({ "Prefer": "return=minimal" }),
+            body: JSON.stringify({
+              student_name: rec.name,
+              group_name: rec.group || null,
+              subject: rec.subject || null,
+              exam: rec.exam || null,
+              correct: rec.correct,
+              total: rec.total,
+              pct: rec.pct,
+              seconds: rec.seconds
+            })
+          }).then(function (res) {
+            if (onDone) onDone(!!res.ok);
+          }).catch(function () { if (onDone) onDone(false); });
+        } catch (e) { if (onDone) onDone(false); }
+      }
+      function normalizeRemote(r) {
+        return {
+          name: r.student_name || "",
+          group: r.group_name || "",
+          subject: r.subject || "",
+          exam: r.exam || "",
+          date: r.created_at || "",
+          correct: r.correct,
+          total: r.total,
+          pct: Number(r.pct),
+          seconds: r.seconds
+        };
+      }
+      function historyKey(a) {
+        return [a.subject || "", a.exam || "", a.correct, a.total, a.pct, a.seconds || ""].join("|");
+      }
+      function mergeHistories(localList, remoteList) {
+        if (!remoteList) return localList;
+        var seen = {};
+        var out = [];
+        remoteList.forEach(function (a) { seen[historyKey(a)] = true; out.push(a); });
+        localList.forEach(function (a) { if (!seen[historyKey(a)]) out.push(a); });
+        return out;
+      }
+      function fetchRemoteHistory(name, done) {
+        if (!supabaseEnabled()) { done(null); return; }
+        var q = SUPABASE_CONFIG.url + "/rest/v1/exam_results?select=*"
+          + "&student_name=ilike." + encodeURIComponent(name.replace(/^\s+|\s+$/g, ""))
+          + "&order=created_at.asc";
+        try {
+          fetch(q, { headers: supabaseHeaders() }).then(function (res) {
+            return res.ok ? res.json() : null;
+          }).then(function (rows) {
+            done(rows ? rows.map(normalizeRemote) : null);
+          }).catch(function () { done(null); });
+        } catch (e) { done(null); }
       }
 
       var BN_MONTHS = ["জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর"];
@@ -1401,17 +1519,33 @@
 
       function openHistory(name) {
         historyName = name;
+        var sync = el("histSync");
+        sync.className = "sync-note wait";
+        sync.textContent = "অনলাইন থেকে ইতিহাস আনা হচ্ছে…";
         renderHistory();
         showScreen("screen-history");
+        fetchRemoteHistory(name, function (remote) {
+          if (remote) {
+            sync.className = "sync-note ok";
+            sync.textContent = "✓ অনলাইন ইতিহাস আপডেট হয়েছে — মোট " + toBn(remote.length) + "টি ফলাফল সার্ভারে পাওয়া গেছে।";
+            el("histSourceNote").textContent = "এই ইতিহাস অনলাইনে সংরক্ষিত ফলাফল থেকে তৈরি — যেকোনো ডিভাইস থেকে একই নামে দেখা যাবে।";
+            renderHistory(remote);
+          } else {
+            sync.className = "sync-note fail";
+            sync.textContent = "অনলাইন থেকে আনা যায়নি — এই ডিভাইসে সংরক্ষিত ইতিহাস দেখানো হচ্ছে।";
+            el("histSourceNote").textContent = "এই ইতিহাস এই ডিভাইসে দেওয়া পরীক্ষাগুলোর ভিত্তিতে তৈরি।";
+          }
+        });
       }
 
-      function renderHistory() {
+      function renderHistory(remoteList) {
         var key = historyName.replace(/^\s+|\s+$/g, "").toLowerCase();
-        var all = loadHistory();
-        var mine = [];
-        for (var i = 0; i < all.length; i++) {
-          if (String(all[i].name || "").replace(/^\s+|\s+$/g, "").toLowerCase() === key) mine.push(all[i]);
+        var allLocal = loadHistory();
+        var localMine = [];
+        for (var i = 0; i < allLocal.length; i++) {
+          if (String(allLocal[i].name || "").replace(/^\s+|\s+$/g, "").toLowerCase() === key) localMine.push(allLocal[i]);
         }
+        var mine = mergeHistories(localMine, remoteList || null);
         el("histName").textContent = historyName;
         var has = mine.length > 0;
         el("histEmpty").classList.toggle("hidden", has);
@@ -1575,6 +1709,26 @@
       }
       el("btnAdminLogin").addEventListener("click", tryAdminLogin);
       el("adminPwInput").addEventListener("keydown", function (ev) { if (ev.key === "Enter") tryAdminLogin(); });
+
+      el("btnCopySql").addEventListener("click", function () {
+        var ta = el("sbSql");
+        ta.select();
+        var done = function () { el("sbCheckStatus").textContent = "SQL কপি হয়েছে — এখন Supabase Dashboard → SQL Editor-এ পেস্ট করে Run করো।"; };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(ta.value).then(done).catch(function () { try { document.execCommand("copy"); } catch (e) {} done(); });
+        } else { try { document.execCommand("copy"); } catch (e) {} done(); }
+      });
+      el("btnCheckSb").addEventListener("click", function () {
+        var st = el("sbCheckStatus");
+        st.textContent = "পরীক্ষা করা হচ্ছে…";
+        fetch(SUPABASE_CONFIG.url + "/rest/v1/exam_results?select=id&limit=1", { headers: supabaseHeaders() })
+          .then(function (res) {
+            if (res.ok) st.textContent = "✓ সংযোগ ঠিক আছে — exam_results টেবিল তৈরি ও চালু আছে।";
+            else if (res.status === 404) st.textContent = "সার্ভার পাওয়া গেছে, কিন্তু exam_results টেবিল এখনো তৈরি হয়নি — উপরের SQL টি SQL Editor-এ Run করো।";
+            else st.textContent = "সার্ভার উত্তর দিয়েছে (HTTP " + res.status + ") — SQL টি Run করা হয়েছে কিনা যাচাই করো।";
+          })
+          .catch(function () { st.textContent = "সংযোগ করা যায়নি — ইন্টারনেট চেক করে আবার চেষ্টা করো।"; });
+      });
 
       el("btnChangePw").addEventListener("click", function () {
         var v = el("adNewPw").value;
