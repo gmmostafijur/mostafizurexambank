@@ -427,13 +427,21 @@
         <div class="start-card">
           <p class="college">Mostafizur Rahman Private Exam</p>
           <h1 class="exam-title" id="startTitle">বহুনির্বাচনি পরীক্ষা</h1>
-          <p class="exam-sub" id="startSub">আগে গ্রুপ, তারপর বিষয় ও পরীক্ষা বেছে নাও</p>
+          <p class="exam-sub" id="startSub">আগে শ্রেণি, তারপর বিষয় ও পরীক্ষা বেছে নাও</p>
           <div class="meta-grid">
             <div class="meta-box"><b id="metaBox1">—</b><span id="metaBox1Label">বিষয়</span></div>
             <div class="meta-box"><b id="metaMarks">৩০</b><span>পূর্ণমান</span></div>
             <div class="meta-box"><b id="metaTime">৩০ মিনিট</b><span>সময়</span></div>
           </div>
-          <div class="select-group">
+          <div class="select-group" id="classGroup">
+            <span class="sg-label" id="classLabel">শ্রেণি নির্বাচন করো</span>
+            <div class="choice-list" id="classList" role="radiogroup" aria-labelledby="classLabel"></div>
+            <div class="chosen-row hidden" id="classChosenRow">
+              <span>শ্রেণি: <b id="chosenClassName"></b></span>
+              <button type="button" class="btn btn-small" id="btnChangeClass">ক্লাস বদলান</button>
+            </div>
+          </div>
+          <div class="select-group hidden" id="groupGroup">
             <span class="sg-label" id="groupLabel">গ্রুপ নির্বাচন করো</span>
             <div class="choice-list" id="groupList" role="radiogroup" aria-labelledby="groupLabel"></div>
             <div class="chosen-row hidden" id="groupChosenRow">
@@ -940,6 +948,175 @@ create policy "Anyone can read exam results" on public.exam_results for select t
           e: "৫ বছর পর ১৯,৩২৬ টাকা, আরও ১২ বছর ১৫% হারে: ১৯,৩২৬ × (১.১৫)¹² ≈ ১,০৩,৪০০ টাকা।" }
       ];
 
+      /* ================= ৭ম শ্রেণি — তথ্য ও যোগাযোগ প্রযুক্তি — চতুর্থ অধ্যায়: ওয়ার্ড প্রসেসিং ও বাংলা কী-বোর্ড ================= */
+      var STIMULI_ICT1 = {
+        e1_89: { label: "উদ্দীপকটি পড়ে ৮ ও ৯ নং প্রশ্নের উত্তর দাও", text: "শিউলী এমএস ওয়ার্ড ব্যবহার করে একটি ডকুমেন্ট তৈরি করেছে। সে প্রথমে এটির কিছু অংশকে মাঝখান বরাবর সাজাতে চায় এবং শেষে প্রিন্ট নিতে চায়।" },
+        e1_1314: { label: "উদ্দীপকটি পড়ে ১৩ ও ১৪ নং প্রশ্নের উত্তর দাও", text: "লিখন তার বন্ধু শামীমের বাসায় গিয়ে দেখল সে বাংলায় একটি ডকুমেন্ট তৈরি করছে। সে শামীমকে জিজ্ঞেস করল— \"তুই বাংলা টাইপ শিখেছিস?\" শামীম বলল না, সফটওয়্যার ডাউনলোড করে নিয়েছি।" }
+      };
+
+      var QUESTIONS_ICT1 = [
+        { q: "ওয়ার্ড প্রসেসিং ব্যবহার করে লেখার জন্য কী প্রয়োজন?",
+          o: ["কী-বোর্ড", "প্রসেসর", "মাউস", "টাইপ রাইটার"], a: 0,
+          e: "কী-বোর্ডই ওয়ার্ড প্রসেসরের প্রধান ইনপুট ডিভাইস; লেখার কাজ কী-বোর্ড দিয়েই হয়।" },
+        { q: "ডকুমেন্ট ফরম্যাটিং এর কাজ—\ni. লাইন স্পেস নির্ধারণ\nii. টেবিল করা\niii. লেখার রং পরিবর্তন\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "লাইন স্পেস, টেবিল আর লেখার রং— তিনটাই ডকুমেন্ট ফরম্যাটিংয়ের কাজ।" },
+        { q: "কপি করতে কোন কি দুটো একত্রে চাপতে হয়?",
+          o: ["Ctrl ও X", "Ctrl ও Y", "Ctrl ও D", "Ctrl ও C"], a: 3,
+          e: "কপি করতে Ctrl ও C চাপতে হয়।" },
+        { q: "সাধারণত যেকোনো ডকুমেন্ট সংরক্ষণ করলে সেটি কোন ফোল্ডারে সংরক্ষিত হয়?",
+          o: ["মাই ডকুমেন্ট", "মাই ফোল্ডার", "মাই কম্পিউটার", "মাই ফাইল"], a: 0,
+          e: "ডকুমেন্ট সংরক্ষণ করলে সাধারণত মাই ডকুমেন্ট ফোল্ডারে জমা হয়।" },
+        { q: "ডকুমেন্টের কোনো অক্ষর, শব্দ, বাক্য বা কোনো অংশকে মুছে ফেলতে কোন কমান্ড দিতে হয়?",
+          o: ["ডিলিট", "পেস্ট", "কপি", "ফরমেট"], a: 0,
+          e: "মুছে ফেলতে ডিলিট কমান্ড দিতে হয়।" },
+        { q: "অভ্র সফটওয়্যারের বিশেষ বৈশিষ্ট্য হলো—\ni. এটি ইউনিকোড সফটওয়্যার\nii. এটির ফোনেটিক বাংলা টাইপিং ব্যবস্থা আছে\niii. কম মূল্যে পাওয়া যায়\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 0,
+          e: "অভ্র ইউনিকোড সফটওয়্যার ও ফোনেটিক টাইপিং সুবিধাযুক্ত; এটি বিনামূল্যে পাওয়া যায়, তাই 'কম মূল্যে' ঠিক নয়।" },
+        { q: "ডকুমেন্টের যেকোনো নির্বাচিত অংশকে মুছে ফেলা যাবে—\ni. Enter কী চেপে\nii. Delete কী চেপে\niii. Backspace কী চেপে\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "ii ও iii", "i ও iii", "i, ii ও iii"], a: 1,
+          e: "নির্বাচিত অংশ Delete বা Backspace চেপে মোছা যায়; Enter চাপলে মোছে না।" },
+        { stim: "e1_89",
+          q: "শিউলী তার প্রথম ফরম্যাটিং করতে পারে—\ni. এলাইনমেন্ট আইকনের বিশেষ আইকনে ক্লিক করে\nii. Ctrl ও J কী দুটি একত্রে চেপে\niii. Ctrl ও E কী দুটি একত্রে চেপে\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 1,
+          e: "মাঝখান বরাবর (সেন্টার) সাজাতে এলাইনমেন্ট আইকনে ক্লিক করা যায় বা Ctrl ও E চাপতে হয়; Ctrl ও J হলো জাস্টিফাই। (বইয়ের ছাপা উত্তরমালায় গ দেওয়া আছে, সেটি ভুল।)" },
+        { stim: "e1_89",
+          q: "শিউলীর দ্বিতীয় কাজটি করতে কোন কী দুটি ব্যবহার করতে পারে?",
+          o: ["Ctrl ও c", "Ctrl ও v", "Ctrl ও d", "Ctrl ও p"], a: 3,
+          e: "প্রিন্ট নিতে Ctrl ও P চাপতে হয়।" },
+        { q: "নব্বই দশকের শেষের দিকে যেসব বাংলা সফটওয়্যার প্রথম সারিতে ছিল সেগুলো হলো—\ni. প্রবর্তনা\nii. লেখনী\niii. বিজয়\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "নব্বই দশকের শেষে প্রবর্তনা, লেখনী ও বিজয়— তিনটিই প্রথম সারিতে ছিল।" },
+        { q: "কীসের ওপর ভিত্তি করে মুনীর চৌধুরী একটি বিজ্ঞানসম্মত কী-বোর্ডের লে-আউট তৈরি করেন?",
+          o: ["বাংলা কী-বোর্ড", "বাংলা সফটওয়্যার", "ইংরেজি কী-বোর্ড", "ইংরেজি সফটওয়্যার"], a: 2,
+          e: "মুনীর চৌধুরী ইংরেজি কী-বোর্ডের ওপর ভিত্তি করে বিজ্ঞানসম্মত বাংলা কী-বোর্ডের লে-আউট তৈরি করেন।" },
+        { q: "মাই ডকুমেন্ট ফোল্ডারে সংরক্ষিত যেকোনো ডকুমেন্ট—\ni. তারিখ অনুযায়ী লিপিবদ্ধ থাকে\nii. অনেক কাজের সাথে মিশে থাকে\niii. প্রয়োজনের সময় খুঁজে পাওয়া কঠিন হয়\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 2,
+          e: "মাই ডকুমেন্টে সব ডকুমেন্ট অনেক কাজের সাথে মিশে থাকে, তাই প্রয়োজনে খুঁজে পাওয়া কঠিন হয়।" },
+        { stim: "e1_1314",
+          q: "শামীম তার কম্পিউটারে কোন সফটওয়্যারটি ডাউনলোড করেছে?",
+          o: ["বিজয়", "লেখনী", "প্রশিকা", "অভ্র"], a: 3,
+          e: "শামীম টাইপ শেখেনি, সফটওয়্যার ডাউনলোড করেছে— অভ্র দিয়েই টাইপ না শিখে উচ্চারণভিত্তিক বাংলা লেখা যায়।" },
+        { stim: "e1_1314",
+          q: "উক্ত সফটওয়্যারের সুবিধা হলো—\ni. উচ্চারণভিত্তিক বাংলা টাইপ করা যায়\nii. মাউস দিয়ে বাংলা টাইপ করা যায়\niii. বিভিন্ন সফটওয়্যারের সঙ্গে সঙ্গতিপূর্ণ\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "ii ও iii", "i ও iii", "i, ii ও iii"], a: 0,
+          e: "অভ্র দিয়ে উচ্চারণভিত্তিক বাংলা টাইপ করা যায় ও মাউস দিয়েও টাইপ করা যায়।" },
+        { q: "নিচের কোনটি ব্যবহার করে ডকুমেন্ট তৈরি করা হয়?",
+          o: ["ওয়ার্ড প্রসেসর", "অপেরা মিনি", "মজিলা ফায়ারফক্স", "ওয়ার্ড অ্যালাইন"], a: 0,
+          e: "ডকুমেন্ট তৈরি করা হয় ওয়ার্ড প্রসেসর দিয়ে।" }
+      ];
+
+      var STIMULI_ICT2 = {
+        e2_45: { label: "উদ্দীপকটি পড়ে ৪ ও ৫ নং প্রশ্নের উত্তর দাও", text: "রানুর জন্ম আমেরিকায়। সে বাংলায় কথা বলতে পারলেও লিখতে পারে না। সে ঠিক করেছে ঈদে দাদুকে বাংলায় চমৎকার একটি কার্ড পাঠিয়ে চমকে দেবে।" }
+      };
+
+      var QUESTIONS_ICT2 = [
+        { q: "কম্পিউটারে লেখালেখির কাজ করার সফটওয়্যার কোনটি?",
+          o: ["গ্রাফিক্স সফটওয়্যার", "সিস্টেম সফটওয়্যার", "ওয়ার্ড প্রসেসিং সফটওয়্যার", "স্প্রেডশিট সফটওয়্যার"], a: 2,
+          e: "লেখালেখির কাজের সফটওয়্যার হলো ওয়ার্ড প্রসেসিং সফটওয়্যার।" },
+        { q: "উচ্চারণভিত্তিক বাংলা সফটওয়্যার কোনটি?",
+          o: ["বিজয়", "প্রবর্তন", "লেখনী", "অভ্র"], a: 3,
+          e: "অভ্র উচ্চারণভিত্তিক (ফোনেটিক) বাংলা টাইপিং ব্যবস্থা; 'ami banglay gan gai' লিখলে 'আমি বাংলায় গান গাই' হয়।" },
+        { q: "'এন্টার' (Enter) কোন কাজে ব্যবহার করা হয়?",
+          o: ["নির্বাচিত অংশ মুছে ফেলতে", "কার্সরকে এক লাইন নিচে নামাতে", "কার্সরের বামদিকের অক্ষর মুছতে", "মেনু বা ডায়ালগ বক্স বাতিল করতে"], a: 1,
+          e: "Enter চাপলে কার্সর এক লাইন নিচে নামে।" },
+        { stim: "e2_45",
+          q: "রানু কার্ড বানাতে কোন সফটওয়্যারটি ব্যবহার করবে?",
+          o: ["বিজয়", "লেখনী", "প্রশিকা", "অভ্র"], a: 3,
+          e: "রানু লিখতে পারে না, তাই উচ্চারণভিত্তিক অভ্র দিয়েই সে কার্ড বানাতে পারবে।" },
+        { stim: "e2_45",
+          q: "রানু কার্ডটি সুন্দর ও সহজে তৈরি করতে—\ni. কিছু শব্দ কপি করতে পারে\nii. ছবি সংযুক্ত করতে পারে\niii. এডিটিং করে বানান শুদ্ধ করতে পারে\nনিচের কোনটি সঠিক?",
+          o: ["i ও ii", "i ও iii", "ii ও iii", "i, ii ও iii"], a: 3,
+          e: "শব্দ কপি, ছবি সংযুক্তি আর এডিটিং করে বানান শুদ্ধ করা— তিনটাই কার্ড সুন্দর ও সহজে বানাতে সাহায্য করে।" },
+        { q: "ওয়ার্ড প্রসেসিং ব্যবহার করে লেখার জন্য কী প্রয়োজন?",
+          o: ["কী-বোর্ড", "প্রসেসর", "মাউস", "টাইপ রাইটার"], a: 0,
+          e: "ওয়ার্ড প্রসেসিংয়ে লেখার জন্য কী-বোর্ড প্রয়োজন।" },
+        { q: "ওয়ার্ড প্রসেসরের প্রধান ইনপুট ডিভাইস কোনটি?",
+          o: ["মাউস", "কী-বোর্ড", "সিডি", "পেনড্রাইভ"], a: 1,
+          e: "ওয়ার্ড প্রসেসরের প্রধান ইনপুট ডিভাইস কী-বোর্ড।" },
+        { q: "ওয়ার্ড প্রসেসর কী?",
+          o: ["হার্ডওয়্যার", "সফটওয়্যার", "বাংলা লে-আউট", "ওএস"], a: 1,
+          e: "ওয়ার্ড প্রসেসর একটি সফটওয়্যার।" },
+        { q: "সর্বপ্রথম বাংলা টাইপরাইটারের জন্য বিজ্ঞানসম্মত কী-বোর্ড লে-আউট তৈরি করে কে?",
+          o: ["মুনীর চৌধুরী", "কাজী নজরুল ইসলাম", "মোস্তফা জব্বার", "মতিউর রহমান"], a: 0,
+          e: "মুনীর চৌধুরী সর্বপ্রথম বাংলা টাইপরাইটারের জন্য বিজ্ঞানসম্মত কী-বোর্ড লে-আউট তৈরি করেন।" },
+        { q: "বাংলা ফন্টসহ শহীদলিপি সফটওয়্যারটি প্রবর্তিত হয় কত সালে?",
+          o: ["১৯৭৫", "১৯৮০", "১৯৮৪", "১৯৮৫"], a: 3,
+          e: "১৯৮৫ সালে বাংলা ফন্টসহ শহীদলিপি সফটওয়্যার প্রবর্তিত হয়।" },
+        { q: "বাংলায় লেখালেখির জন্যে অভ্র সফটওয়্যারে কোন কী চাপতে হয়?",
+          o: ["F8", "F9", "F11", "F12"], a: 3,
+          e: "অভ্র সফটওয়্যারে বাংলায় লেখার জন্য F12 কী চাপতে হয়।" },
+        { q: "Cut কমান্ড ব্যবহার করতে কোন কী দুটি একত্রে চাপতে হয়?",
+          o: ["Ctrl ও D", "Ctrl ও C", "Ctrl ও X", "Ctrl ও V"], a: 2,
+          e: "Cut করতে Ctrl ও X চাপতে হয়।" },
+        { q: "কপি করতে কোন কী দুটো একত্রে চাপতে হয়?",
+          o: ["Ctrl ও X", "Ctrl ও Y", "Ctrl ও D", "Ctrl ও C"], a: 3,
+          e: "কপি করতে Ctrl ও C চাপতে হয়।" },
+        { q: "লাইনের শুরুতে কারসর নিতে কোনটি ব্যবহৃত হয়?",
+          o: ["End", "Home", "Ctrl + Home", "Ctrl + End"], a: 1,
+          e: "লাইনের শুরুতে কারসর নিতে Home কী ব্যবহৃত হয়।" },
+        { q: "লাইনের শেষে কারসর নিতে কোনটি ব্যবহৃত হয়?",
+          o: ["End", "Home", "Ctrl + Home", "Ctrl + End"], a: 0,
+          e: "লাইনের শেষে কারসর নিতে End কী ব্যবহৃত হয়।" }
+      ];
+
+      var QUESTIONS_ICT3 = [
+        { q: "ডকুমেন্টের শুরুতে কারসর নিতে কোনটি ব্যবহৃত হয়?",
+          o: ["End", "Home", "Ctrl + Home", "Ctrl + End"], a: 2,
+          e: "ডকুমেন্টের শুরুতে কারসর নিতে Ctrl + Home চাপতে হয়।" },
+        { q: "ডকুমেন্টের শেষে কারসর নিতে কোনটি ব্যবহৃত হয়?",
+          o: ["End", "Home", "Ctrl + Home", "Ctrl + End"], a: 3,
+          e: "ডকুমেন্টের শেষে কারসর নিতে Ctrl + End চাপতে হয়।" },
+        { q: "লেখা বোল্ড করতে কোন কী দুটি ব্যবহৃত হয়?",
+          o: ["Ctrl + D", "Ctrl + B", "Ctrl + E", "Ctrl + I"], a: 1,
+          e: "লেখা বোল্ড করতে Ctrl + B চাপতে হয়।" },
+        { q: "লেখা ইটালিক করতে কোন কী দুটি ব্যবহৃত হয়?",
+          o: ["Ctrl + D", "Ctrl + B", "Ctrl + E", "Ctrl + I"], a: 3,
+          e: "লেখা ইটালিক করতে Ctrl + I চাপতে হয়।" },
+        { q: "লেখা আন্ডারলাইন করতে কোন কী দুটি ব্যবহৃত হয়?",
+          o: ["Ctrl + M", "Ctrl + E", "Ctrl + I", "Ctrl + U"], a: 3,
+          e: "লেখা আন্ডারলাইন করতে Ctrl + U চাপতে হয়।" },
+        { q: "Ctrl + p কমান্ডটি ব্যবহৃত হয়—",
+          o: ["প্রিন্ট করতে", "কপি করতে", "বোল্ড করতে", "ইটালিক করতে"], a: 0,
+          e: "Ctrl + P দিয়ে প্রিন্ট করা হয়।" },
+        { q: "বাংলা ইউনিকোড সফটওয়্যার—",
+          o: ["শহীদ লিপি", "অভ্র", "বিজয়", "প্রশিকা"], a: 1,
+          e: "অভ্র বাংলা ইউনিকোড সফটওয়্যার।" },
+        { q: "বাংলায় কোন সফটওয়্যারটি জনপ্রিয়তার শীর্ষে?",
+          o: ["প্রশিকা", "লেখনী", "প্রবর্তন", "বিজয়"], a: 3,
+          e: "বাংলায় বিজয় সফটওয়্যারটি জনপ্রিয়তার শীর্ষে।" },
+        { q: "ডানদিক এলাইনমেন্ট করার জন্য কোন কী দুটি চাপতে হবে?",
+          o: ["Ctrl + e", "Ctrl + j", "Ctrl + r", "Ctrl + l"], a: 2,
+          e: "ডানদিক এলাইনমেন্ট করতে Ctrl + R চাপতে হয়।" },
+        { q: "পেস্ট শব্দের আক্ষরিক অর্থ কী?",
+          o: ["প্রতিস্থাপন করা", "এলোমেলো করা", "আঠা লাগানো", "স্থান পরিবর্তন"], a: 2,
+          e: "পেস্ট শব্দের আক্ষরিক অর্থ আঠা লাগানো।" },
+        { q: "Alt + Ctrl + B একসাথে চাপ দিয়ে নিচের কোনটি তুমি সচল করতে পারবে?",
+          o: ["প্রশিকা কী-বোর্ড", "বিজয় কী-বোর্ড", "অভ্র কী-বোর্ড", "প্রবর্তনা কী-বোর্ড"], a: 1,
+          e: "Alt + Ctrl + B চাপ দিলে বিজয় কী-বোর্ড সচল হয়।" },
+        { q: "মাইক্রোসফট ওয়ার্ডে জাস্টিফাইড কমান্ড দিলে অ্যালাইনমেন্ট কোনদিকে হবে?",
+          o: ["বাম দিকে", "ডান দিকে", "মাঝ বরাবর", "সবদিকে"], a: 3,
+          e: "জাস্টিফাইড করলে লেখা দুই দিকেই (সবদিকে) সমান হয়।" },
+        { q: "নিচের কোনটি বাংলা Unicode ফন্ট?",
+          o: ["NikoshBAN", "SutonnyAMG", "SutonnyMJ", "Arial"], a: 0,
+          e: "NikoshBAN একটি বাংলা Unicode ফন্ট।" },
+        { q: "বিজয় সফটওয়্যারে বাংলায় লেখালেখির জন্য কোন ফন্ট নির্বাচন করতে হয়?",
+          o: ["SutonnyMJ", "NikoshBAN", "Akaash", "AlbertusMT"], a: 0,
+          e: "বিজয় সফটওয়্যারে বাংলায় লেখার জন্য SutonnyMJ ফন্ট নির্বাচন করতে হয়।" },
+        { q: "কত সালের পর থেকে ইন্টারনেট ব্যবহারকারীর সংখ্যা বাড়তে থাকে?",
+          o: ["১৯৯০", "১৯৯৮", "২০০০", "২০০৪"], a: 2,
+          e: "২০০০ সালের পর থেকে ইন্টারনেট ব্যবহারকারীর সংখ্যা বাড়তে থাকে।" }
+      ];
+
+      var ICT_EXAMS = [
+        { label: "পরীক্ষা ১", sub: "পাঠ মূল্যায়ন · চতুর্থ অধ্যায়: ওয়ার্ড প্রসেসিং ও বাংলা কী-বোর্ড (বইয়ের পৃষ্ঠা ৬২)",
+          meta1: "অধ্যায় ৪", meta1Label: "চতুর্থ অধ্যায়", stimuli: STIMULI_ICT1, questions: QUESTIONS_ICT1, minutes: 15 },
+        { label: "পরীক্ষা ২", sub: "বোর্ড অনুশীলনী ও অধ্যায়ের প্রশ্ন · চতুর্থ অধ্যায়: ওয়ার্ড প্রসেসিং ও বাংলা কী-বোর্ড",
+          meta1: "অধ্যায় ৪", meta1Label: "চতুর্থ অধ্যায়", stimuli: STIMULI_ICT2, questions: QUESTIONS_ICT2, minutes: 15 },
+        { label: "পরীক্ষা ৩", sub: "অধ্যায়ের প্রশ্ন · চতুর্থ অধ্যায়: ওয়ার্ড প্রসেসিং ও বাংলা কী-বোর্ড",
+          meta1: "অধ্যায় ৪", meta1Label: "চতুর্থ অধ্যায়", stimuli: {}, questions: QUESTIONS_ICT3, minutes: 15 }
+      ];
+
       var EXAMS = [
         { label: "পরীক্ষা ১", sub: "বহুনির্বাচনি অভীক্ষা",
           meta1: "১৫২", meta1Label: "বিষয় কোড", stimuli: STIMULI, questions: QUESTIONS },
@@ -1058,7 +1235,8 @@ create policy "Anyone can read exam results" on public.exam_results for select t
         if (!ex) return;
         currentExam = ex;
         examSubject = selectedSubject || "";
-        examGroupName = selectedGroup >= 0 ? GROUPS[selectedGroup].name : "";
+        var clsName = selectedClass >= 0 ? CLASSES[selectedClass].name : "";
+        examGroupName = clsName + (selectedGroup >= 0 ? (clsName ? " · " : "") + GROUPS[selectedGroup].name : "");
         DURATION = (ex.minutes || 30) * 60;
         QUESTIONS = ex.questions;
         STIMULI = ex.stimuli;
@@ -1205,7 +1383,17 @@ create policy "Anyone can read exam results" on public.exam_results for select t
         window.scrollTo({ top: 0 });
       }
 
-      /* ================= GROUP → SUBJECT → EXAM selection ================= */
+      /* ================= CLASS → (GROUP) → SUBJECT → EXAM selection ================= */
+      var CLASSES = [
+        { name: "৬ষ্ঠ শ্রেণি", en: "Class 6" },
+        { name: "৭ম শ্রেণি", en: "Class 7" },
+        { name: "৮ম শ্রেণি", en: "Class 8" },
+        { name: "৯ম শ্রেণি", en: "Class 9" },
+        { name: "১০ম শ্রেণি", en: "Class 10" }
+      ];
+      var SUBJECTS_CLASS7 = ["বাংলা ১ম পত্র", "বাংলা ২য় পত্র", "English 1st Paper", "English 2nd Paper", "গণিত", "বিজ্ঞান", "বাংলাদেশ ও বিশ্বপরিচয়", "তথ্য ও যোগাযোগ প্রযুক্তি", "ইসলাম ও নৈতিক শিক্ষা", "হিন্দুধর্ম ও নৈতিক শিক্ষা", "কৃষি শিক্ষা", "গার্হস্থ্য বিজ্ঞান"];
+      var SUBJECTS_CLASS68 = ["বাংলা", "English", "গণিত", "বিজ্ঞান", "বাংলাদেশ ও বিশ্বপরিচয়", "তথ্য ও যোগাযোগ প্রযুক্তি", "ইসলাম ও নৈতিক শিক্ষা", "কৃষি শিক্ষা", "গার্হস্থ্য বিজ্ঞান"];
+      var selectedClass = -1;
       var COMMON_SUBJECTS = ["বাংলা ১ম পত্র", "বাংলা ২য় পত্র", "English 1st Paper", "English 2nd Paper", "গণিত", "বাংলাদেশ ও বিশ্বপরিচয়", "তথ্য ও যোগাযোগ প্রযুক্তি", "ইসলাম ও নৈতিক শিক্ষা", "হিন্দুধর্ম ও নৈতিক শিক্ষা", "কৃষি শিক্ষা", "গার্হস্থ্য বিজ্ঞান"];
       var GROUPS = [
         { name: "বিজ্ঞান", en: "Science", subjects: ["পদার্থবিজ্ঞান", "রসায়ন", "জীববিজ্ঞান", "উচ্চতর গণিত"] },
@@ -1235,6 +1423,14 @@ create policy "Anyone can read exam results" on public.exam_results for select t
 
       function examsForSubject(subject) {
         var list = [];
+        if (selectedClass === 1) {
+          /* ৭ম শ্রেণি: শুধু তথ্য ও যোগাযোগ প্রযুক্তিতে পরীক্ষা আছে */
+          if (subject === "তথ্য ও যোগাযোগ প্রযুক্তি") {
+            for (var ci = 0; ci < ICT_EXAMS.length; ci++) list.push(ICT_EXAMS[ci]);
+          }
+          return list;
+        }
+        if (selectedClass === 0 || selectedClass === 2) return list; /* ৬ষ্ঠ ও ৮ম শ্রেণি: এখনো কোনো পরীক্ষা নেই */
         if (subject === "ফিন্যান্স ও ব্যাংকিং") {
           for (var i = 0; i < EXAMS.length; i++) list.push(EXAMS[i]);
         }
@@ -1270,6 +1466,61 @@ create policy "Anyone can read exam results" on public.exam_results for select t
         b.appendChild(r); b.appendChild(wrap);
         b.addEventListener("click", onClick);
         return b;
+      }
+
+      function renderClasses() {
+        var list = el("classList");
+        list.innerHTML = "";
+        CLASSES.forEach(function (c, i) {
+          list.appendChild(makeChoice(c.name, c.en, i === selectedClass, function () { selectClass(i); }));
+        });
+        var chosen = selectedClass >= 0;
+        el("classList").classList.toggle("hidden", chosen);
+        el("classChosenRow").classList.toggle("hidden", !chosen);
+        if (chosen) el("chosenClassName").textContent = CLASSES[selectedClass].name + " (" + CLASSES[selectedClass].en + ")";
+      }
+
+      function selectClass(i) {
+        selectedClass = i;
+        selectedGroup = -1;
+        selectedSubject = null;
+        activeExams = [];
+        selectedExam = 0;
+        renderClasses();
+        renderGroups();
+        el("btnStart").disabled = true;
+        if (i === 3 || i === 4) {
+          /* ৯ম ও ১০ম শ্রেণি: আগের মতোই গ্রুপ → বিষয় → পরীক্ষা */
+          el("groupGroup").classList.remove("hidden");
+          el("subjectGroup").classList.add("hidden");
+          el("examGroup").classList.add("hidden");
+          el("startSub").textContent = "আগে গ্রুপ, তারপর বিষয় ও পরীক্ষা বেছে নাও";
+        } else {
+          /* ৬ষ্ঠ, ৭ম ও ৮ম শ্রেণি: সরাসরি বিষয় */
+          el("groupGroup").classList.add("hidden");
+          renderSubjects();
+          el("subjectGroup").classList.remove("hidden");
+          el("examGroup").classList.add("hidden");
+          el("startSub").textContent = "বিষয় ও পরীক্ষা বেছে নাও";
+        }
+        updateStartMeta();
+      }
+
+      function changeClass() {
+        selectedClass = -1;
+        selectedGroup = -1;
+        selectedSubject = null;
+        activeExams = [];
+        selectedExam = 0;
+        renderClasses();
+        renderGroups();
+        el("groupGroup").classList.add("hidden");
+        el("subjectGroup").classList.add("hidden");
+        el("examGroup").classList.add("hidden");
+        el("startTitle").textContent = "বহুনির্বাচনি পরীক্ষা";
+        el("startSub").textContent = "আগে শ্রেণি, তারপর বিষয় ও পরীক্ষা বেছে নাও";
+        el("btnStart").disabled = true;
+        updateStartMeta();
       }
 
       function renderGroups() {
@@ -1314,8 +1565,14 @@ create policy "Anyone can read exam results" on public.exam_results for select t
       function renderSubjects() {
         var list = el("subjectList");
         list.innerHTML = "";
-        if (selectedGroup < 0) return;
-        subjectsForGroup(selectedGroup).forEach(function (s) {
+        var subs;
+        if (selectedClass === 1) subs = SUBJECTS_CLASS7;
+        else if (selectedClass === 0 || selectedClass === 2) subs = SUBJECTS_CLASS68;
+        else {
+          if (selectedGroup < 0) return;
+          subs = subjectsForGroup(selectedGroup);
+        }
+        subs.forEach(function (s) {
           var n = examsForSubject(s).length;
           list.appendChild(makeChoice(s, n ? toBn(n) + "টি পরীক্ষা আছে" : "এখনো পরীক্ষা নেই", s === selectedSubject, function () { selectSubject(s); }));
         });
@@ -1372,6 +1629,8 @@ create policy "Anyone can read exam results" on public.exam_results for select t
       }
 
       el("btnChangeGroup").addEventListener("click", changeGroup);
+      el("btnChangeClass").addEventListener("click", changeClass);
+      renderClasses();
       renderGroups();
 
       /* ================= ATTEMPT HISTORY (আগের পরীক্ষা) =================
